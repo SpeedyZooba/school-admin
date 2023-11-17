@@ -1,0 +1,23 @@
+{
+  "name": "schooladmin",
+  "version": "1.0.0",
+  "description": "dbms project demonstrating an interface for a school's administration",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SpeedyZooba/school-admin.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SpeedyZooba/school-admin/issues"
+  },
+  "homepage": "https://github.com/SpeedyZooba/school-admin#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mysql": "^2.18.1"
+  }
+}

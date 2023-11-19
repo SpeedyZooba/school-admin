@@ -1,0 +1,37 @@
+STUDENT:
+-Tüm öğrencileri dön.
+-Aktif olan tüm öğrencileri dön.
+-Öğrenci oluştur.(Parent alır ve parents of tablosunu günceller.)
+-Öğrenci sil.
+-Öğrenci düzenle.
+
+STUDENT FREE HOUR:
+-Freehour oluştur, sil, düzenle.
+
+PARENT
+-Tüm velileri dön, oluştur, düzenle, sil.
+
+STAFF
+-Tüm staffleri dön.
+-Staff oluştur.
+-Staff sil.
+-Staff düzenle.
+
+TEACHES CLASS
+-Hocanın verebildiği dersleri düzenle.
+
+STOCKS
+-Stok dön, ekle, sil.
+***trigger ile expenseden gelen değeri düş.
+
+COURSE
+-Course oluştur, ekle, sil.
+
+CLASSROOM
+-Classroom oluştur, düzenle, ekle, sil.
+
+CLASS
+-Class oluştur.
+-Class sil.
+-Class düzenle.
+-classhours, course, classexpense, classroom, studentclasses

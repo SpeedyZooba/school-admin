@@ -87,7 +87,7 @@ async function deleteStudent(id)
     }
 }
 
-module.exports 
+module.exports=
 {
     createStudent,
     getAllStudents,

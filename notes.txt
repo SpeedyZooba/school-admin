@@ -35,3 +35,21 @@ CLASS
 -Class sil.
 -Class düzenle.
 -classhours, course, classexpense, classroom, studentclasses
+
+
+
+Görkem: 
+Staff
+Staff Working Hour 
+Student Free Hour
+
+Barış:
+class expense
+Class hours 
+classroom
+
+Boran:
+General expense 
+TEACHES
+STOCKS
+course

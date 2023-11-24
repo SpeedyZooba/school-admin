@@ -1,4 +1,4 @@
-const { parentService } = require("../services/parentService.js");
+const parentService = require("../services/parentService.js");
 
 async function registerParent(req, res) {
     try {

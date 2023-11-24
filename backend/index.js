@@ -1,8 +1,10 @@
 const express = require("express");
 const cors = require("cors");
+const dbConfig = require('./config.js');
+
 const app = express();
 
-const parentRoutes = require('./routes/parentRoute.js');
+const parentRoutes = require('../backend/routes/parentRoute.js');
 
 var corsOptions = {
   origin: "http://localhost:8081"
@@ -21,10 +23,10 @@ app.use(express.urlencoded({ extended: true }));
 const mysql = require('mysql2');
  
 const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'Borano98',
-  database: 'project'
+  host: dbConfig.HOST,
+  user: dbConfig.USER,
+  password: dbConfig.PASSWORD,
+  database: dbConfig.DB
 });
  
 connection.connect((error) => {

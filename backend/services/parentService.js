@@ -1,4 +1,8 @@
-const { Parent } = require("../models/parent.js");
+const sequelize = require('../seqConfig.js');
+const initModels = require('../models/init-models.js');
+
+const models = initModels(sequelize);
+const Parent = models.parent;
 
 async function createParent(parentData)
 {
@@ -14,8 +18,6 @@ async function createParent(parentData)
     }
 }
 
-
-
 module.exports={
     createParent
-}
+};

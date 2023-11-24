@@ -49,7 +49,7 @@ Class hours
 classroom
 
 Boran:
-General expense 
+General expense+ 
 TEACHES
 STOCKS
-course
+course+

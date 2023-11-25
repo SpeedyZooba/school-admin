@@ -42,6 +42,7 @@ Görkem:
 Staff
 Staff Working Hour 
 Student Free Hour
+TEACHES
 
 Barış:
 class expense
@@ -50,6 +51,6 @@ classroom
 
 Boran:
 General expense+ 
-TEACHES
-STOCKS
+STOCKS+
 course+
+Student Free Hour

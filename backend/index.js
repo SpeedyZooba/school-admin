@@ -6,6 +6,7 @@ const app = express();
 
 const parentRoutes = require('../backend/routes/parentRoute.js');
 const studentRoutes = require('../backend/routes/studentRoute.js');
+const staffRoutes = require('../backend/routes/staffRoutes.js');
 
 var corsOptions = {
   origin: "http://localhost:8081"
@@ -17,6 +18,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/', parentRoutes);
 app.use('/', studentRoutes);
+app.use('/', staffRoutes);
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));

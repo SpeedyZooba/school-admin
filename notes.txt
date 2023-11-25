@@ -44,9 +44,9 @@ Staff Working Hour
 Student Free Hour
 
 Barış:
-class expense
-Class hours 
-classroom
+class expense []
+Class hours [x]
+classroom [x]
 
 Boran:
 General expense 

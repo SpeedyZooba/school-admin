@@ -13,7 +13,20 @@ async function registerCourse(req, res) {
     }
 }
 
+async function deleteCourse(req, res){
+    try{
+        const { CourseId, CourseName } = req.body;
+        const course = await courseService.deleteCourse({ CourseId, CourseName });
+        res.status(201).json("Course removed");
+    }
+    catch (error) {
+        console.error("An error occurred while deleting the course.", error);
+        res.status(500).json({ error: error.message });
+    }
+}
+
 module.exports=
 {
-    registerCourse
+    registerCourse,
+    deleteCourse
 }

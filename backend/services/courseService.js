@@ -18,7 +18,22 @@ async function createCourse(courseData)
     }
 }
 
+async function deleteCourse(courseData)
+{
+    try 
+    {
+        const course = await Course(courseData);
+        await course.destroy();
+    }
+    catch (error)
+    {
+        console.error("Something went wrong with course creation.", error);
+        throw new Error("Something went wrong.");
+    }
+}
+
 module.exports=
 {
-    createCourse
+    createCourse,
+    deleteCourse
 }

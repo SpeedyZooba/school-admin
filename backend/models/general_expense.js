@@ -4,7 +4,8 @@ module.exports = function(sequelize, DataTypes) {
     ExpenseId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true
     },
     ExpenseName: {
       type: DataTypes.STRING(255),

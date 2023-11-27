@@ -23,7 +23,7 @@ async function fetchParentIdByPhone(phoneNo)
     try
     {
         const parentId = await Parent.findOne({ where: { PhoneNo: phoneNo.ParentPhoneNumber } });
-        return parentId;
+        return parentId.ParentId;
     }
     catch (error)
     {

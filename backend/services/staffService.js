@@ -1,33 +1,20 @@
 const sequelize = require('../seqConfig.js');
 const initModels = require('../models/init-models.js');
-const teachesClassService = require('../services/teachesClassService.js');
+const TeachesClassService = require('../services/teachesClassService.js');
+const StaffHourService = require('../services/staffHourService.js');
 
 const models = initModels(sequelize);
 const Staff = models.staff;
 
-async function createStaff(staffData, staffId, courseData)
+async function createStaff(staffData, staffId, courseData, hourData)
 {
     try
     {
-        const staff = Staff.create(staffData);
+        const staff = await Staff.create(staffData);
+        await StaffHourService.createWorkingHour(staffId, hourData);
         if (courseData ?? false)
         {
-            const courseArray = courseData.CourseInfo.split(',').map(item => parseInt(item.trim(), 10));
-            try
-            {
-                const courseList = await Promise.all(
-                    courseArray.map(async item => {
-                        const teacherId = staffId.StaffId;
-                        return await teachesClassService.createTeacherClassLink({ StaffId: teacherId, CourseId: item });
-                    })
-                );
-                return courseList;
-            }
-            catch (error)
-            {
-                console.error("Something went wrong with teacher creation.", error);
-                throw new Error("Something went wrong with teacher creation.");
-            }
+            await TeachesClassService.createTeacherClassLink(staffId, courseData);
         }
         return staff;
     }
@@ -38,6 +25,21 @@ async function createStaff(staffData, staffId, courseData)
     }
 }
 
+async function deleteStaff(staffId)
+{
+    try
+    {
+        const staff = await Staff.destroy({ where: { StaffId: staffId.StaffId } });
+        return staff;
+    }
+    catch (error)
+    {
+        console.error("Something went wrong with staff deletion.", error);
+        throw new Error("Something went wrong with staff deletion.");
+    }
+}
+
 module.exports = {
-    createStaff
+    createStaff,
+    deleteStaff
 };

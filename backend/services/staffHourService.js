@@ -2,14 +2,22 @@ const sequelize = require('../seqConfig.js');
 const initModels = require('../models/init-models.js');
 
 const models = initModels(sequelize);
-const staffHour = models.staff_working_hours;
+const StaffHour = models.staff_working_hours;
 
-async function createWorkingHour(hourData)
+async function createWorkingHour(staffId, hourData)
 {
     try
     {
-        const hour = staffHour.create(hourData);
-        return hour;
+        const hourArray = hourData.WorkingHour.split(',').map(item => item.trim());
+        const hourList = await Promise.all(
+            hourArray.map(async (item, index) => {
+                const id = staffId.StaffId;
+                const [MorningStatus, NoonStatus] = item.split("-").map(Number);
+                const day = mapDay(index);
+                return await StaffHour.create({ StaffId: id, ReservedDay: day, FreeHourMorning: MorningStatus, FreeHourAfternoon: NoonStatus });
+            })
+        );
+        return hourList;
     }
     catch (error)
     {
@@ -18,6 +26,28 @@ async function createWorkingHour(hourData)
     }
 }
 
+async function deleteWorkingHourForStaff(staffId)
+{
+    try
+    {
+        const hour = StaffHour.destroy({ where: { StaffId: staffId.StaffId } });
+        return hour;
+    }
+    catch (error)
+    {
+        console.error("Something went wrong while deleting staff hour.", error);
+        throw new Error("Something went wrong while deleting staff hour.");
+    }
+}
+
+function mapDay(index)
+{
+    const daysOfWeek = ['Pzt', 'Sal', 'Car', 'Prs', 'Cum'];
+    return daysOfWeek[index];
+}
+
 module.exports = {
-    createWorkingHour
+    createWorkingHour,
+    deleteWorkingHourForStaff,
+    mapDay
 };

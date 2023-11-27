@@ -6,6 +6,7 @@ const app = express();
 
 const parentRoutes = require('../backend/routes/parentRoute.js');
 const studentRoutes = require('../backend/routes/studentRoute.js');
+const staffRoutes = require('../backend/routes/staffRoutes.js');
 const classroomRoutes = require('../backend/routes/classroomRoute.js');
 const classHoursRoutes = require('../backend/routes/classHoursRoute.js');
 const classExpenseRoutes = require('../backend/routes/classExpenseRoute.js');
@@ -23,6 +24,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/', parentRoutes);
 app.use('/', studentRoutes);
+app.use('/', staffRoutes);
 app.use('/', classroomRoutes);
 app.use('/', classHoursRoutes);
 app.use('/', classExpenseRoutes);

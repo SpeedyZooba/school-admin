@@ -6,12 +6,15 @@ const app = express();
 
 const parentRoutes = require('../backend/routes/parentRoute.js');
 const studentRoutes = require('../backend/routes/studentRoute.js');
+const classroomRoutes = require('../backend/routes/classroomRoute.js');
+const classHoursRoutes = require('../backend/routes/classHoursRoute.js');
+const classExpenseRoutes = require('../backend/routes/classExpenseRoute.js');
 const courseRoutes = require('../backend/routes/courseRoute.js');
 const generalExpenseRoutes = require('../backend/routes/generalExpenseRoute.js');
 const stockRoutes = require('../backend/routes/stockRoute.js');
 
 var corsOptions = {
-  origin: "http://localhost:8081"
+  origin: "http://localhost:3000"
 };
 
 app.use(cors(corsOptions));
@@ -20,6 +23,9 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/', parentRoutes);
 app.use('/', studentRoutes);
+app.use('/', classroomRoutes);
+app.use('/', classHoursRoutes);
+app.use('/', classExpenseRoutes);
 app.use('/', courseRoutes);
 app.use('/', generalExpenseRoutes);
 app.use('/', stockRoutes);

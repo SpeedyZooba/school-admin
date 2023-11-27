@@ -45,9 +45,9 @@ Student Free Hour
 TEACHES
 
 Barış:
-class expense
-Class hours 
-classroom
+class expense [x]
+Class hours [x]
+classroom [x]
 
 Boran:
 General expense+ 

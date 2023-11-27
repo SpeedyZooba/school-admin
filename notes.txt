@@ -44,7 +44,7 @@ Staff Working Hour
 Student Free Hour
 
 Barış:
-class expense []
+class expense [x]
 Class hours [x]
 classroom [x]
 

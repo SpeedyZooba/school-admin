@@ -18,6 +18,21 @@ async function createParent(parentData)
     }
 }
 
+async function fetchParentIdByPhone(phoneNo)
+{
+    try
+    {
+        const parentId = await Parent.findOne({ where: { PhoneNo: phoneNo.ParentPhoneNumber } });
+        return parentId;
+    }
+    catch (error)
+    {
+        console.error("Something went wrong while fetching the ID.", error);
+        throw new Error("Something went wrong while fetching the ID.");
+    }
+}
+
 module.exports={
-    createParent
+    createParent,
+    fetchParentIdByPhone
 };

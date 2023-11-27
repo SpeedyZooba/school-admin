@@ -4,8 +4,8 @@ module.exports = function(sequelize, DataTypes) {
     StudentId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      autoIncrement: true,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true
     },
     FirstName: {
       type: DataTypes.STRING(25),

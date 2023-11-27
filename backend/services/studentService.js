@@ -5,12 +5,13 @@ const models = initModels(sequelize);
 const Student = models.student;
 const ParentOf = models.parent_of;
 
-async function createStudent(studentData, parentOfData)
+async function createStudent(studentData, parentId)
 {
     try 
     {
         const student = await Student.create(studentData);
-        await ParentOf.create(parentOfData);
+        const studentId = student.StudentId;
+        await ParentOf.create({ StudentId: studentId, ParentId: parentId });
         return student;
     }
     catch (error)

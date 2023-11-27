@@ -11,7 +11,6 @@ async function registerParent(req, res) {
     }
 }
 
-// Export the function for use in other parts of your application
 module.exports = {
     registerParent
 }

@@ -20,7 +20,22 @@ async function createStudent(studentData, parentOfData)
     }
 }
 
+async function deleteStudent(studentId)
+{
+    try
+    {
+        const student = Student.destroy({ where: { StudentId: studentId.StudentId } });
+        return student;
+    }
+    catch (error)
+    {
+        console.error("Something went wrong with student deletion.", error);
+        throw new Error("Something went wrong.");
+    }
+}
+
 module.exports=
 {
-    createStudent
+    createStudent,
+    deleteStudent
 }

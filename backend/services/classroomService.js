@@ -24,7 +24,6 @@ async function findAllClassroom()
     try 
     {
         const classroom = await Classroom.findAll();
-        console.log(classroom);
         return classroom;
     }
     catch (error)
@@ -66,7 +65,7 @@ async function updateClassroom(data)
                 RoomId: data.RoomId
             }
         });
-        
+
         const classroom = await Classroom.findAll({
             where: {
                 RoomId: data.RoomId

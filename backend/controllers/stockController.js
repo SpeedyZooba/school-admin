@@ -11,6 +11,18 @@ async function registerStock(req, res){
     }
 }
 
+async function getAllStock(req, res) {
+    try {
+        const stock = await stockService.findAllStock();
+        res.status(201).json(stock);
+    }
+    catch (error) {
+        console.error("An error occurred while getting the stocks.", error);
+        res.status(500).json({ error: error.message });
+    }
+}
+
 module.exports={
-    registerStock
+    registerStock,
+    getAllStock
 }

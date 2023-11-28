@@ -13,7 +13,7 @@ async function createStaff(staffData)
         const staff = await Staff.create(staffData);
         const staffId = staff.StaffId;
         await StaffHourService.createWorkingHour(staffId, staffData.WorkingHour);
-        if (staffData.CourseInfo ?? false)
+        if (staffData.CourseInfo !== null)
         {
             await TeachesClassService.createTeacherClassLink(staffId, staffData.CourseInfo);
         }

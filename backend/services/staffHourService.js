@@ -13,7 +13,7 @@ async function createWorkingHour(staffId, hourData)
             hourArray.map(async (item, index) => {
                 const StaffHours = item.split("-").map(Number);
                 const day = mapDay(index);
-                for(let i = 0; i < StaffHour.length; i++){
+                for(let i = 0; i < StaffHours.length; i++){
                     await StaffHour.create({ StaffId: staffId, ReservedDay: day, StaffHour: StaffHours[i]});
                 }
                     

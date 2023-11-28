@@ -37,8 +37,23 @@ async function deleteStudent(studentId)
     }
 }
 
+async function getAllStudent()
+{
+    try
+    {
+        const studentList = Student.findAll();
+        return studentList;
+    }
+    catch (error)
+    {
+        console.error("Something went wrong while gathering student list.", error);
+        throw new Error("Something went wrong.");
+    }
+}
+
 module.exports=
 {
     createStudent,
-    deleteStudent
+    deleteStudent,
+    getAllStudent
 }

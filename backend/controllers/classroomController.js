@@ -15,7 +15,7 @@ async function registerClassroom(req, res) {
 async function getClassroom(req, res) {
     try {
         const classroom = await classroomService.findAllClassroom();
-        res.status(201).json(classroom);
+        res.status(200).json(classroom);
     }
     catch (error) {
         console.error("An error occurred while getting the classroom.", error);
@@ -27,7 +27,7 @@ async function deleteClassroom(req, res) {
     try {
         const { RoomId } = req.body;
         const classroom = await classroomService.deleteClassroom({ RoomId });
-        res.status(201).json(classroom);
+        res.status(200).json(classroom);
     }
     catch (error) {
         console.error("An error occurred while deleting the classroom.", error);
@@ -39,7 +39,7 @@ async function updateClassroom(req, res) {
     try {
         const { RoomId, Capacity } = req.body;
         const classroom = await classroomService.updateClassroom({ RoomId, Capacity });
-        res.status(201).json(classroom);
+        res.status(200).json(classroom);
     }
     catch (error) {
         console.error("An error occurred while updatating the classroom.", error);

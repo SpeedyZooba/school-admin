@@ -17,7 +17,7 @@ async function deleteCourse(req, res){
     try{
         const { CourseId, CourseName } = req.body;
         const course = await courseService.deleteCourse({ CourseId, CourseName });
-        res.status(201).json("Course removed");
+        res.status(200).json("Course removed");
     }
     catch (error) {
         console.error("An error occurred while deleting the course.", error);

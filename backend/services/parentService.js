@@ -18,6 +18,20 @@ async function createParent(parentData)
     }
 }
 
+async function getAllParents()
+{
+    try
+    {
+        const parents = await Parent.findAll();
+        return parents;
+    }
+    catch (error)
+    {
+        console.error("Something went wrong while fetching the parents.", error);
+        throw new Error("Something went wrong while fetching the parents.");
+    }
+}
+
 async function fetchParentIdByPhone(phoneNo)
 {
     try
@@ -34,5 +48,6 @@ async function fetchParentIdByPhone(phoneNo)
 
 module.exports={
     createParent,
+    getAllParents,
     fetchParentIdByPhone
 };

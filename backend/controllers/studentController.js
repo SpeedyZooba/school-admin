@@ -3,9 +3,9 @@ const parentService = require("../services/parentService.js");
 
 async function registerStudent(req, res) {
     try {
-        const { FirstName, LastName, Sex, BirthDate, PhoneNo, Email, IsActive, GradDate, ParentPhoneNumber } = req.body;
+        const { FirstName, LastName, Sex, BirthDate, PhoneNo, Email, IsActive, GradDate, ParentPhoneNumber, FreeHour } = req.body;
         const ParentId = await parentService.fetchParentIdByPhone({ ParentPhoneNumber });
-        const student = await studentService.createStudent({ FirstName, LastName, Sex, BirthDate, PhoneNo, Email, IsActive, GradDate }, ParentId);
+        const student = await studentService.createStudent({ FirstName, LastName, Sex, BirthDate, PhoneNo, Email, IsActive, GradDate, FreeHour }, ParentId);
         res.status(201).json(student);
     }
     catch (error) {

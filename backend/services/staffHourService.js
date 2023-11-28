@@ -11,10 +11,9 @@ async function createWorkingHour(staffId, hourData)
         const hourArray = hourData.WorkingHour.split(',').map(item => item.trim());
         const hourList = await Promise.all(
             hourArray.map(async (item, index) => {
-                const id = staffId.StaffId;
                 const [MorningStatus, NoonStatus] = item.split("-").map(Number);
                 const day = mapDay(index);
-                return await StaffHour.create({ StaffId: id, ReservedDay: day, FreeHourMorning: MorningStatus, FreeHourAfternoon: NoonStatus });
+                return await StaffHour.create({ StaffId: staffId, ReservedDay: day, FreeHourMorning: MorningStatus, FreeHourAfternoon: NoonStatus });
             })
         );
         return hourList;

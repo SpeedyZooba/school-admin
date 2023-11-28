@@ -6,15 +6,16 @@ const StaffHourService = require('../services/staffHourService.js');
 const models = initModels(sequelize);
 const Staff = models.staff;
 
-async function createStaff(staffData, staffId, courseData, hourData)
+async function createStaff(staffData)
 {
     try
     {
         const staff = await Staff.create(staffData);
-        await StaffHourService.createWorkingHour(staffId, hourData);
+        const staffId = staff.staffId;
+        await StaffHourService.createWorkingHour(staffId, staffData.WorkingHour);
         if (courseData ?? false)
         {
-            await TeachesClassService.createTeacherClassLink(staffId, courseData);
+            await TeachesClassService.createTeacherClassLink(staffId, staffData.CourseInfo);
         }
         return staff;
     }
@@ -22,6 +23,20 @@ async function createStaff(staffData, staffId, courseData, hourData)
     {
         console.error("Something went wrong with staff creation.", error);
         throw new Error("Something went wrong with staff creation.");
+    }
+}
+
+async function getAllStaff()
+{
+    try
+    {
+        const staff = await Staff.findAll();
+        return staff;
+    }
+    catch (error)
+    {
+        console.error("Something went wrong while fetching the staff.", error);
+        throw new Error("Something went wrong while fetching the staff.");
     }
 }
 
@@ -41,5 +56,6 @@ async function deleteStaff(staffId)
 
 module.exports = {
     createStaff,
+    getAllStaff,
     deleteStaff
 };

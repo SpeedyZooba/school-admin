@@ -38,7 +38,7 @@ async function deleteClassHours(req, res) {
 async function updateClassHours(req, res) {
     try {
         const { ReservedDayOld, ReservedHourOld, SectionIdOld, CourseIdOld, ReservedDayNew, ReservedHourNew, SectionIdNew, CourseIdNew } = req.body;
-        const classHours = await classHoursService.updateClassHours({ ReservedDayOld, ReservedHourOld, SectionIdOld, CourseIdOld }, { ReservedDayOldNew, ReservedHourOldNew, SectionIdOldNew, CourseIdOldNew });
+        const classHours = await classHoursService.updateClassHours({ ReservedDayOld, ReservedHourOld, SectionIdOld, CourseIdOld }, { ReservedDayNew, ReservedHourNew, SectionIdNew, CourseIdNew });
         res.status(201).json(classHours);
     }
     catch (error) {

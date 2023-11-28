@@ -1,5 +1,6 @@
 const sequelize = require('../seqConfig.js');
 const initModels = require('../models/init-models.js');
+const StudentHourService = require('../services/studentHourService.js');
 
 const models = initModels(sequelize);
 const Student = models.student;
@@ -12,6 +13,7 @@ async function createStudent(studentData, parentId)
         const student = await Student.create(studentData);
         const studentId = student.StudentId;
         await ParentOf.create({ StudentId: studentId, ParentId: parentId });
+        await StudentHourService.createFreeHour(studentId, studentData.FreeHour);
         return student;
     }
     catch (error)

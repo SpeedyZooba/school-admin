@@ -12,10 +12,9 @@ async function createFreeHour(studentId, hourData)
         const hourArray = hourData.FreeHour.split(',').map(item => item.trim());
         const hourList = await Promise.all(
             hourArray.map(async (item, index) => {
-                const id = studentId.StudentId;
                 const [MorningStatus, NoonStatus] = item.split("-").map(Number);
                 const day = mapDay(index);
-                return await StudentHour.create({ StudentId: id, ReservedDay: day, FreeHourMorning: MorningStatus, FreeHourAfternoon: NoonStatus });
+                return await StudentHour.create({ StudentId: studentId, ReservedDay: day, FreeHourMorning: MorningStatus, FreeHourAfternoon: NoonStatus });
             })
         );
         return hourList;

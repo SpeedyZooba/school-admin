@@ -18,7 +18,22 @@ async function createStock(stockData)
     }
 }
 
+async function findAllStock()
+{
+    try 
+    {
+        const stock = await Stock.findAll();
+        return stock;
+    }
+    catch (error)
+    {
+        console.error("Something went wrong with get stock.", error);
+        throw new Error("Something went wrong.");
+    }
+}
+
 module.exports=
 {
-    createStock
+    createStock,
+    findAllStock
 }

@@ -5,5 +5,7 @@ const router = express.Router();
 //Register a new stock
 router.post('/stocks', stocks.registerStock);
 
-module.exports = router;
+// Get all stocks
+router.get('/stocks', stocks.getStock);
 
+module.exports = router;

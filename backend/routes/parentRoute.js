@@ -20,4 +20,6 @@ const router = express.Router();
 // Create a new parent
 router.post('/parents', parents.registerParent);
 
+router.get('/parents', parents.getAllParents);
+
 module.exports = router;

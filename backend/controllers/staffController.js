@@ -15,7 +15,7 @@ async function registerStaffMember(req, res)
     }
 }
 
-async function getAllStaff()
+async function getAllStaff(req,res)
 {
     try
     {

@@ -4,5 +4,6 @@ const router = express.Router();
 
 router.post('/staff', staff.registerStaffMember);
 router.delete('/staff', staff.deleteStaffMember);
+router.get('/staff', staff.getAllStaff);
 
 module.exports = router;

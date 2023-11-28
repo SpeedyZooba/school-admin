@@ -8,7 +8,7 @@ async function createWorkingHour(staffId, hourData)
 {
     try
     {
-        const hourArray = hourData.WorkingHour.split(',').map(item => item.trim());
+        const hourArray = hourData.split(',').map(item => item.trim());
         const hourList = await Promise.all(
             hourArray.map(async (item, index) => {
                 const [MorningStatus, NoonStatus] = item.split("-").map(Number);

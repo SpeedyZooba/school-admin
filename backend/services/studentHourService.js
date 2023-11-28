@@ -42,7 +42,7 @@ async function deleteFreeHourForStudent(studentId)
 
 async function updateFreeHourForStudent(studentId, hourData)
 {
-    const hourArray = hourData.FreeHour.split(',').map(item => item.trim());
+    const hourArray = hourData.split(',').map(item => item.trim());
     const hourList = await Promise.all(
         hourArray.map(async (item, index) => {
             const id = studentId.StudentId;

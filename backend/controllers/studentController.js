@@ -12,16 +12,16 @@ async function registerStudent(req, res) {
         console.error("An error occurred while registering the student.", error);
         res.status(500).json({ error: error.message });
     }
+}
 
-    async function getAllStudent(req,res) {
-        try {
-            const studentList = await studentService.getAllStudent()
-            res.status(200).json(studentList);
-        }
-        catch (error) {
-            console.error("Something went wrong while gathering student list.", error);
-            res.status(500).json({ error: error.message });
-        }
+async function getAllStudent(req,res) {
+    try {
+        const studentList = await studentService.getAllStudent()
+        res.status(200).json(studentList);
+    }
+    catch (error) {
+        console.error("Something went wrong while gathering student list.", error);
+        res.status(500).json({ error: error.message });
     }
 }
 

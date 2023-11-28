@@ -15,7 +15,7 @@ async function registerClassHours(req, res) {
 async function getClassHours(req, res) {
     try {
         const classHours = await classHoursService.findAllClassHours();
-        res.status(201).json(classHours);
+        res.status(200).json(classHours);
     }
     catch (error) {
         console.error("An error occurred while getting the classHours.", error);
@@ -27,7 +27,7 @@ async function deleteClassHours(req, res) {
     try {
         const { ReservedDay, ReservedHour, SectionId, CourseId } = req.body;
         const classHours = await classHoursService.deleteClassHours({ ReservedDay, ReservedHour, SectionId, CourseId });
-        res.status(201).json(classHours);
+        res.status(200).json(classHours);
     }
     catch (error) {
         console.error("An error occurred while deleting the classHours.", error);
@@ -39,7 +39,7 @@ async function updateClassHours(req, res) {
     try {
         const { ReservedDayOld, ReservedHourOld, SectionIdOld, CourseIdOld, ReservedDayNew, ReservedHourNew, SectionIdNew, CourseIdNew } = req.body;
         const classHours = await classHoursService.updateClassHours({ ReservedDayOld, ReservedHourOld, SectionIdOld, CourseIdOld }, { ReservedDayNew, ReservedHourNew, SectionIdNew, CourseIdNew });
-        res.status(201).json(classHours);
+        res.status(200).json(classHours);
     }
     catch (error) {
         console.error("An error occurred while updatating the classHours.", error);

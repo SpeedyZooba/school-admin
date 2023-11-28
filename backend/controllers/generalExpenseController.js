@@ -31,5 +31,6 @@ async function getAllGeneralExpenses()
 
 module.exports=
 {
-    registerGeneralExpense
+    registerGeneralExpense,
+    getAllGeneralExpenses
 }

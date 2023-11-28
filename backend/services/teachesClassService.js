@@ -3,19 +3,18 @@ const initModels = require('../models/init-models.js');
 
 const models = initModels(sequelize);
 const TeachesClass = models.teaches_class;
+const Course = models.course;
 
 async function createTeacherClassLink(staffId, courseData)
 {
     try
     {
-        const courseArray = courseData.CourseInfo.split(',').map(item => parseInt(item.trim(), 10));
-        const courseList = await Promise.all(
-            courseArray.map(async item => {
-                const teacherId = staffId.StaffId;
-                return await TeachesClass.create({ StaffId: teacherId, CourseId: item });
-            })
-        );
-        return courseList;
+        const course = Course.findOne({ where: { CourseName: courseData } });
+        if (course ?? true)
+        {
+            course = Course.create({ CourseName: courseData });
+        }
+        return await TeachesClass.create({ StaffId: staffId, CourseId: course.CourseId });
     }
     catch (error)
     {

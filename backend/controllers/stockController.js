@@ -14,7 +14,7 @@ async function registerStock(req, res){
 async function getAllStock(req, res) {
     try {
         const stock = await stockService.findAllStock();
-        res.status(201).json(stock);
+        res.status(200).json(stock);
     }
     catch (error) {
         console.error("An error occurred while getting the stocks.", error);

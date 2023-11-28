@@ -9,10 +9,11 @@ async function createTeacherClassLink(staffId, courseData)
 {
     try
     {
-        const course = Course.findOne({ where: { CourseName: courseData } });
-        if (course ?? true)
+        let course = await Course.findOne({ where: { CourseName: courseData } });
+        
+        if (course === null)
         {
-            course = Course.create({ CourseName: courseData });
+            course = await Course.create({ CourseName: courseData });
         }
         return await TeachesClass.create({ StaffId: staffId, CourseId: course.CourseId });
     }
@@ -20,6 +21,27 @@ async function createTeacherClassLink(staffId, courseData)
     {
         console.error("Something went wrong while establishing the link.", error);
         throw new Error("Something went wrong while establishing the link.");
+    }
+}
+
+async function getTeacherIdByCourseId(courseId)
+{
+    try 
+    {
+        const courseLink = TeachesClass.findAll({ where: { CourseId: courseId } });
+        if (courseLink ?? true)
+        {
+            return courseLink;
+        }
+        else
+        {
+            return null;
+        }
+    }
+    catch (error)
+    {
+        console.error("Something went wrong while fetching the course link.", error);
+        throw new Error("Something went wrong while fetching the course link.");
     }
 }
 
@@ -69,5 +91,6 @@ module.exports = {
     createTeacherClassLink,
     deleteTeacherClassLink,
     deleteAllLinksForTeacher,
-    deleteAllLinksForCourse
+    deleteAllLinksForCourse,
+    getTeacherIdByCourseId
 };

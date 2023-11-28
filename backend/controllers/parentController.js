@@ -12,7 +12,7 @@ async function registerParent(req, res) {
     }
 }
 
-async function getAllParents()
+async function getAllParents(req, res)
 {
     try
     {

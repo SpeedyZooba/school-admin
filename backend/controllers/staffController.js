@@ -15,11 +15,11 @@ async function registerStaffMember(req, res)
     }
 }
 
-async function getAllStaff()
+async function getAllStaff(req,res)
 {
     try
     {
-        const staffList = staffService.getAllStaff();
+        const staffList = await staffService.getAllStaff();
         res.status(200).json(staffList);
     }
     catch (error)

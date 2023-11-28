@@ -9,12 +9,16 @@ async function createFreeHour(studentId, hourData)
 {
     try
     {
-        const hourArray = hourData.FreeHour.split(',').map(item => item.trim());
+        const hourArray = hourData.split(',').map(item => item.trim());
         const hourList = await Promise.all(
             hourArray.map(async (item, index) => {
-                const [MorningStatus, NoonStatus] = item.split("-").map(Number);
+                const StudentHours = item.split("-").map(Number);
                 const day = mapDay(index);
-                return await StudentHour.create({ StudentId: studentId, ReservedDay: day, FreeHourMorning: MorningStatus, FreeHourAfternoon: NoonStatus });
+                console.log(StudentHours + '*******');
+                for(let i = 0; i < StudentHours.length; i++){
+                    await StudentHour.create({ StudentId: studentId, ReservedDay: day, StudentHour: StudentHours[i] });
+                }
+                
             })
         );
         return hourList;

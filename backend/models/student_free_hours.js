@@ -15,13 +15,10 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    FreeHourMorning: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false
-    },
-    FreeHourAfternoon: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false
+    StudentHour: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true
     }
   }, {
     sequelize,
@@ -35,6 +32,7 @@ module.exports = function(sequelize, DataTypes) {
         fields: [
           { name: "StudentId" },
           { name: "ReservedDay" },
+          { name: "StudentHour" }
         ]
       },
     ]

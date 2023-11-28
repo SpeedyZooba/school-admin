@@ -9,11 +9,11 @@ async function createTeacherClassLink(staffId, courseData)
 {
     try
     {
-        console.log(courseData + "--------")
-        let course = Course.findOne({ where: { CourseName: courseData } });
-        if (course ?? true)
+        let course = await Course.findOne({ where: { CourseName: courseData } });
+        
+        if (course === null)
         {
-            course = Course.create({ CourseName: courseData });
+            course = await Course.create({ CourseName: courseData });
         }
         return await TeachesClass.create({ StaffId: staffId, CourseId: course.CourseId });
     }

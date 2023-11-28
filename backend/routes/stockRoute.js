@@ -6,6 +6,6 @@ const router = express.Router();
 router.post('/stocks', stocks.registerStock);
 
 // Get all stocks
-router.get('/stocks', stocks.getStock);
+router.get('/stocks', stocks.getAllStock);
 
 module.exports = router;

@@ -5,7 +5,7 @@ async function registerGeneralExpense(req, res)
     try 
     {
         const { ExpenseId, ExpenseName, Amount, ExpenseDate } = req.body;
-        const generalExpense = await generalExpenseController.createGeneralExpense({ ExpenseId, ExpenseName, Amount, ExpenseDate });
+        const generalExpense = await generalExpenseService.createGeneralExpense({ ExpenseId, ExpenseName, Amount, ExpenseDate });
         res.status(201).json(generalExpense);
     }
     catch (error) 
@@ -15,7 +15,7 @@ async function registerGeneralExpense(req, res)
     }
 }
 
-async function getAllGeneralExpenses()
+async function getAllGeneralExpenses(req, res)
 {
     try
     {

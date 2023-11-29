@@ -22,7 +22,6 @@ export default function AddStock() {
     const [rows, setRows] = useState([]);
 
     const columns = [
-        { field: 'id', headerName: 'Satır', width: 70, type: 'number' },
         { field: 'ProductId', headerName: 'Ürün Kodu', width: 150, type: 'number' },
         { field: 'ProductName', headerName: 'Ürün Adı', width: 150 },
         { field: 'Amount', headerName: 'Miktar', width: 150, type: 'number' },

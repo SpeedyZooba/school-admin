@@ -7,6 +7,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import PeopleIcon from '@mui/icons-material/People';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import LayersIcon from '@mui/icons-material/Layers';
+import Button from '@mui/material/Button';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 
 const goPage = (page) => {
@@ -65,11 +66,26 @@ export const secondaryListItems = (
       </ListItemIcon>
       <ListItemText primary="Stok İşlemleri" />
     </ListItemButton>
+    <ListSubheader component="div" inset>
+      Ders Programları
+    </ListSubheader>
     <ListItemButton onClick={() => {goPage('studentSchedule')}}>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
       <ListItemText primary="Öğrenci Ders Programı" />
+    </ListItemButton>
+    <ListItemButton onClick={() => {goPage('teacherSchedule')}}>
+      <ListItemIcon>
+        <AssignmentIcon />
+      </ListItemIcon>
+      <ListItemText primary="Öğretmen Ders Programı" />
+    </ListItemButton>
+    <ListItemButton onClick={() => {goPage('classroomSchedule')}}>
+      <ListItemIcon>
+        <AssignmentIcon />
+      </ListItemIcon>
+      <ListItemText primary="Sınıf Ders Programı" />
     </ListItemButton>
   </React.Fragment>
 );

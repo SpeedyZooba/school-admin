@@ -37,7 +37,6 @@ export default function AddParent() {
     const [success, setSuccess] = useState(false);
 
     const columns = [
-        { field: 'id', headerName: 'Satır', width: 70 },
         { field: 'ParentId', headerName: 'ID', width: 70 },
         { field: 'FirstName', headerName: 'Ad', width: 130 },
         { field: 'LastName', headerName: 'Soyad', width: 130 },
@@ -177,7 +176,6 @@ export default function AddParent() {
     </Paper>
     <Paper sx={{ p: 2, marginTop: 2}}>
         <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'right', gap: 2, marginBottom: 2}}>
-            <Button variant="contained" color="inherit" onClick={update}>Güncelle</Button>
             <Button variant="contained" color="error" onClick={erase}>SİL</Button>
         </Box>
         <DataGrid

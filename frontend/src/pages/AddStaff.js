@@ -21,7 +21,7 @@ const initialForm = {
     StaffType: '',
     ShiftType: '',
     Salary: '',
-    CourseInfo: ''
+    CourseInfo: null
 };
 
 const sex = [
@@ -82,7 +82,8 @@ export default function AddStaff() {
     const [rows, setRows] = useState([]);
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 70 },
+
+        { field: 'StaffId', headerName: 'ID', width: 70 },
         { field: 'FirstName', headerName: 'Ad', width: 130 },
         { field: 'LastName', headerName: 'Soyad', width: 130 },
         { field: 'Sex', headerName: 'Cinsiyet', width: 70, 
@@ -352,7 +353,6 @@ export default function AddStaff() {
     </Paper>
     <Paper sx={{ p: 2, marginTop: 2}}>
         <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'right', gap: 2, marginBottom: 2}}>
-            <Button variant="contained" color="inherit" onClick={update}>Güncelle</Button>
             <Button variant="contained" color="error" onClick={erase}>SİL</Button>
         </Box>
         <DataGrid

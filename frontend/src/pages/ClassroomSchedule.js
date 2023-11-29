@@ -9,6 +9,7 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { styled } from '@mui/material/styles';
 
+
 const days = [
     "Pzt",
     "Sal",
@@ -17,7 +18,7 @@ const days = [
     "Cum"
 ];
 
-export default function StudentSchedule() {
+export default function ClassroomSchedule() {
     const [rowSelectionModel, setRowSelectionModel] = useState([]);
     const [selectValueError, setSelectValueError] = useState(false);
     const [error, setError] = useState(false);
@@ -27,25 +28,8 @@ export default function StudentSchedule() {
     const [schedule, setSchedule] = useState([]);
 
     const columns = [
-        { field: 'StudentId', headerName: 'ID', width: 120 },
-        { field: 'FirstName', headerName: 'Ad', width: 130 },
-        { field: 'LastName', headerName: 'Soyad', width: 130 },
-        { field: 'Sex', headerName: 'Cinsiyet', width: 100, 
-            valueGetter: (params) => {
-                if(params.row.Sex == 'M') return 'Erkek'; 
-                else return 'Kadın';
-            }
-        },
-        { field: 'BirthDate', headerName: 'Doğum Tarihi', width: 100 },
-        { field: 'PhoneNo', headerName: 'Telefon Numarası', width: 150, type: 'number' },
-        { field: 'Email', headerName: 'E-Mail', width: 180 },
-        { field: 'IsActive', headerName: 'Durum', width: 130,
-            valueGetter: (params) => {
-                if(params.row.IsActive) return 'Aktif'; 
-                else return 'Pasif';
-            } 
-        },
-        { field: 'GradDate', headerName: 'Mezuniyet Tarihi', width: 130 }
+        { field: 'RoomId', headerName: 'Sınıf Numarası', width: 150, type: 'number' },
+        { field: 'Capacity', headerName: 'Kapasite', width: 150, type: 'number' },
     ];
 
     const columnsSchedule = [
@@ -71,9 +55,9 @@ export default function StudentSchedule() {
             for(let day = 0; day < 5; day++){
                 let hourStr = hour + ':00 - ' + hour + ':50'
                 for(let i = 0; i < input.length; i++){
-                    let temp = input[i].split('-');
-                    if(temp[0] == hour && temp[1] == days[day]){
-                        tempTemplate = {...tempTemplate, rowHour: hourStr, [days[day]]: temp[2] + '.' + temp[3]};
+                    let temp = input[i];
+                    if(temp.ClassHour == hour && temp.ClassDay == days[day]){
+                        tempTemplate = {...tempTemplate, rowHour: hourStr, [days[day]]: temp.CourseName + '.' + temp.SectionId};
                     }else{
                         tempTemplate = ({...tempTemplate, rowHour: hourStr})
                     }
@@ -87,28 +71,28 @@ export default function StudentSchedule() {
     }
 
     const createSchedule = () => {
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://localhost:8080/schedule");
-        xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
-        xhr.onload = () => {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-              console.log(JSON.parse(xhr.responseText));
-            } else {
-              console.log(`Error: ${xhr.status}`);
-            }
-          };
-        xhr.send();
-      };
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "http://localhost:8080/schedule");
+      xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+      xhr.onload = () => {
+          if (xhr.readyState == 4 && xhr.status == 200) {
+            console.log(JSON.parse(xhr.responseText));
+          } else {
+            console.log(`Error: ${xhr.status}`);
+          }
+        };
+      xhr.send();
+    };
 
     useEffect(() => {
 
-		getAllStudents();
+		getAllClassroom();
 
 	}, []);
 
-    const getAllStudents = () => {
+    const getAllClassroom = () => {
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", "http://localhost:8080/students");
+        xhr.open("GET", "http://localhost:8080/classroom");
         xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
         xhr.onload = () => {
             if (xhr.readyState == 4 && xhr.status == 200) {
@@ -128,15 +112,16 @@ export default function StudentSchedule() {
     const getSchedule = () => {
         if(rowSelectionModel.length == 0) setSelectValueError(true);
         else{
-            const studentId = rows.filter(row => row.id == rowSelectionModel[0])[0].StudentId;
+            const roomId = rows.find(row => row.id === rowSelectionModel[0])?.RoomId;
+            console.log(rows.filter(row => row.id == rowSelectionModel[0])[0].RoomId);
             const xhr = new XMLHttpRequest();
-            xhr.open("GET", `http://localhost:8080/schedule/student?StudentId=${studentId}`);
+            xhr.open("GET", `http://localhost:8080/schedule/class?RoomId=${roomId}`);
             xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
             xhr.onload = () => {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                   console.log(xhr.responseText);
-                  setSchedule(createScheduleData(xhr.responseText))
                   setSuccess(true);
+                  setSchedule(createScheduleData(xhr.responseText))
                 } else {
                   console.log(`Error: ${xhr.status}`);
                   setError(true);

@@ -10,7 +10,7 @@ const studentClassService = require('../services/studentClassService.js');
 async function createSchedule(req, res)
 {
     try 
-    {
+    {   
         const enrollInfo =  Object.values([await enrollService.getEnrolledCourses()]);
         console.log(enrollInfo[0]['CourseId']);
         for (let i = 0; i < enrollInfo.length; i++)
@@ -28,6 +28,10 @@ async function createSchedule(req, res)
             {
                 const availableStudents = Object.values([await enrollService.getAvailableEnrollments(courseId, teacherHours[j]['FreeDay'], teacherHours[j]['FreeHour'])]);
                 const availableClassroom = Object.values([await classroomService.findFreeClassroom(teacherHours[j]['FreeDay'], teacherHours[j]['FreeHour'])]);
+                console.log(availableStudents);
+                console.log('availableStudents');
+                console.log(availableClassroom);
+                console.log('availableClassroom');
                 await classService.createClass({ SectionId: j + 1, CourseId: courseId, RoomId: availableClassroom, TeacherId: teacherId });
                 await classHourService.createClassHours({ ReservedDay: teacherHours[j]['FreeDay'], ReservedHour: teacherHours[j]['FreeHour'], SectionId: j + 1, CourseId: courseId });
                 for (let k = 0; k < availableStudents.length; k++)
@@ -50,7 +54,8 @@ async function getClassSchedule(req, res)
 {
     try
     {
-        const classroomId = req.body.RoomId;
+        const classroomId = req.query.RoomId;
+        console.log(req.query);
         const classList = await classService.getClassroomTimes(classroomId);
         res.status(200).json(classList);
     }
@@ -65,7 +70,7 @@ async function getStudentSchedule(req, res)
 {
     try
     {
-        const studentId = req.body.StudentId;
+        const studentId = req.query.StudentId;
         const studentList = await classService.getStudentTimes(studentId);
         res.status(200).json(studentList);
     }
@@ -80,7 +85,7 @@ async function getTeacherSchedule(req, res)
 {
     try
     {
-        const teacherId = req.body.TeacherId;
+        const teacherId = req.query.TeacherId;
         const teacherList = await classService.getStudentTimes(teacherId);
         res.status(200).json(teacherList);
     }

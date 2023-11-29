@@ -19,6 +19,8 @@ import AddClassroom from './pages/AddClassroom';
 import AddGeneralExpense from './pages/AddGeneralExpense';
 import AddStock from './pages/AddStock';
 import StudentSchedule from './pages/StudentSchedule';
+import TeacherSchedule from './pages/TeacherSchedule';
+import ClassroomSchedule from './pages/ClassroomSchedule';
 import { mainListItems, secondaryListItems } from './pages/listItems';
 import {
   BrowserRouter as Router,
@@ -35,10 +37,11 @@ const PageName = () => {
   else if(window.location.pathname == '/addGeneralExpense') return 'Genel Gider İşlemleri';
   else if(window.location.pathname == '/studentSchedule') return 'Öğrenci Ders Programı';
   else if(window.location.pathname == '/addStock') return 'Stok Ekle';
+  else if(window.location.pathname == '/teacherSchedule') return 'Öğretmen Ders Programı';
+  else if(window.location.pathname == '/classroomSchedule') return 'Sınıf Ders Programı';
 }
 
-
-const drawerWidth = 260;
+const drawerWidth = 300;
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -170,6 +173,8 @@ export default function Dashboard() {
                   <Route path='/addGeneralExpense' element={<AddGeneralExpense/>}/>
                   <Route path='/studentSchedule' element={<StudentSchedule/>}/>
                   <Route path='/addStock' element={<AddStock/>}/>
+                  <Route path='/teacherSchedule' element={<TeacherSchedule/>}/>
+                  <Route path='/classroomSchedule' element={<ClassroomSchedule/>}/>
                 </Routes>
           </Router>
           </Container>

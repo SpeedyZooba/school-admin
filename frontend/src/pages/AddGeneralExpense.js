@@ -23,7 +23,6 @@ export default function AddGeneralExpense() {
     const [rows, setRows] = useState([]);
 
     const columns = [
-        { field: 'id', headerName: 'Satır', width: 70, type: 'number' },
         { field: 'ExpenseId', headerName: 'Gider Kodu', width: 150, type: 'number' },
         { field: 'ExpenseName', headerName: 'Gider Adı', width: 150 },
         { field: 'Amount', headerName: 'Miktar', width: 150, type: 'number' },

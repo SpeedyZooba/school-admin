@@ -28,8 +28,6 @@ async function createSchedule(req, res)
             {
                 const availableStudents = Object.values(await enrollService.getAvailableEnrollments(courseId, teacherHours[j]['FreeDay'], teacherHours[j]['FreeHour']));
                 const availableClassroom = Object.values([await classroomService.findFreeClassroom(teacherHours[j]['FreeDay'], teacherHours[j]['FreeHour'])]);
-                const capacity = await classroomService.getClassroomCapacityById(availableClassroom);
-                console.log(capacity + ' ---------- \n' + availableClassroom + ' ----------- \n' + (availableStudents[0]['StudentId']));
                 await classService.createClass({ SectionId: j + 1, CourseId: courseId, RoomId: availableClassroom, TeacherId: teacherId });
                 await classHourService.createClassHours({ ReservedDay: teacherHours[j]['FreeDay'], ReservedHour: teacherHours[j]['FreeHour'], SectionId: j + 1, CourseId: courseId });
                 for (let k = 0; k < Math.min(capacity, availableStudents.length); k++)

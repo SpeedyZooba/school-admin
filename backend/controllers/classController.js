@@ -10,7 +10,7 @@ const studentClassService = require('../services/studentClassService.js');
 async function createSchedule(req, res)
 {
     try 
-    {
+    {   
         const enrollInfo =  Object.values([await enrollService.getEnrolledCourses()]);
         console.log(enrollInfo[0]['CourseId']);
         for (let i = 0; i < enrollInfo.length; i++)
@@ -53,7 +53,7 @@ async function getClassSchedule(req, res)
 {
     try
     {
-        const classroomId = req.query.RoomId;
+        const classroomId = req.body.RoomId;
         const classList = await classService.getClassroomTimes(classroomId);
         res.status(200).json(classList);
     }

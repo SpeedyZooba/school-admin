@@ -17,7 +17,7 @@ const days = [
     "Cum"
 ];
 
-export default function StudentSchedule() {
+export default function TeacherSchedule() {
     const [rowSelectionModel, setRowSelectionModel] = useState([]);
     const [selectValueError, setSelectValueError] = useState(false);
     const [error, setError] = useState(false);
@@ -27,25 +27,32 @@ export default function StudentSchedule() {
     const [schedule, setSchedule] = useState([]);
 
     const columns = [
-        { field: 'StudentId', headerName: 'ID', width: 120 },
+        { field: 'StaffId', headerName: 'ID', width: 70 },
         { field: 'FirstName', headerName: 'Ad', width: 130 },
         { field: 'LastName', headerName: 'Soyad', width: 130 },
-        { field: 'Sex', headerName: 'Cinsiyet', width: 100, 
+        { field: 'Sex', headerName: 'Cinsiyet', width: 70, 
             valueGetter: (params) => {
                 if(params.row.Sex == 'M') return 'Erkek'; 
                 else return 'Kadın';
             }
         },
-        { field: 'BirthDate', headerName: 'Doğum Tarihi', width: 100 },
-        { field: 'PhoneNo', headerName: 'Telefon Numarası', width: 150, type: 'number' },
+        { field: 'PhoneNo', headerName: 'Telefon Numarası', width: 150 },
         { field: 'Email', headerName: 'E-Mail', width: 180 },
-        { field: 'IsActive', headerName: 'Durum', width: 130,
+        { field: 'BirthDate', headerName: 'Doğum Tarihi', width: 120 },
+        { field: 'StaffType', headerName: 'Çalışan Türü', width: 120, 
             valueGetter: (params) => {
-                if(params.row.IsActive) return 'Aktif'; 
-                else return 'Pasif';
-            } 
+                if(params.row.StaffType == 1) return 'Yönetici'; 
+                else if(params.row.StaffType == 2) return 'Öğretmen'; 
+                else return 'Yardımcı';
+            }
         },
-        { field: 'GradDate', headerName: 'Mezuniyet Tarihi', width: 130 }
+        { field: 'ShiftType', headerName: 'Mesai Türü', width: 120, 
+            valueGetter: (params) => {
+                if(params.row.ShiftType == 'FULLTIME') return 'Tam Zamanlı'; 
+                else return 'Yarı Zamanlı';
+            }
+        },
+        { field: 'Salary', headerName: 'Maaş', width: 80 }
     ];
 
     const columnsSchedule = [
@@ -102,19 +109,20 @@ export default function StudentSchedule() {
 
     useEffect(() => {
 
-		getAllStudents();
+		getAllStaff();
 
 	}, []);
 
-    const getAllStudents = () => {
+    const getAllStaff = () => {
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", "http://localhost:8080/students");
+        xhr.open("GET", "http://localhost:8080/staff");
         xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
         xhr.onload = () => {
             if (xhr.readyState == 4 && xhr.status == 200) {
               console.log(JSON.parse(xhr.responseText));
               let rows = JSON.parse(xhr.responseText);
-              rows.map((row, i) => row.id = i + 1)
+              rows = rows.filter(row => row.StaffType == 2);
+              rows.map((row, i) => row.id = i + 1); 
               setRows(rows);
               setSuccess(true);
             } else {
@@ -128,9 +136,9 @@ export default function StudentSchedule() {
     const getSchedule = () => {
         if(rowSelectionModel.length == 0) setSelectValueError(true);
         else{
-            const studentId = rows.filter(row => row.id == rowSelectionModel[0])[0].StudentId;
+            const staffId = rows.filter(row => row.id == rowSelectionModel[0])[0].StaffId;
             const xhr = new XMLHttpRequest();
-            xhr.open("GET", `http://localhost:8080/schedule/student?StudentId=${studentId}`);
+            xhr.open("GET", `http://localhost:8080/schedule/teacher?TeacherId=${staffId}`);
             xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
             xhr.onload = () => {
                 if (xhr.readyState == 4 && xhr.status == 200) {

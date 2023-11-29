@@ -15,6 +15,10 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import AddStudent from './pages/AddStudent';
 import AddParent from './pages/AddParent';
 import AddStaff from './pages/AddStaff';
+import AddClassroom from './pages/AddClassroom';
+import AddGeneralExpense from './pages/AddGeneralExpense';
+import AddStock from './pages/AddStock';
+import StudentSchedule from './pages/StudentSchedule';
 import { mainListItems, secondaryListItems } from './pages/listItems';
 import {
   BrowserRouter as Router,
@@ -27,10 +31,14 @@ const PageName = () => {
   else if(window.location.pathname == '/addStudent') return 'Öğrenci İşlemleri';
   else if(window.location.pathname == '/addParent') return 'Veli İşlemleri';
   else if(window.location.pathname == '/addStaff') return 'Personel İşlemleri';
+  else if(window.location.pathname == '/addClassroom') return 'Sınıf İşlemleri';
+  else if(window.location.pathname == '/addGeneralExpense') return 'Genel Gider İşlemleri';
+  else if(window.location.pathname == '/studentSchedule') return 'Öğrenci Ders Programı';
+  else if(window.location.pathname == '/addStock') return 'Stok Ekle';
 }
 
 
-const drawerWidth = 240;
+const drawerWidth = 260;
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -158,6 +166,10 @@ export default function Dashboard() {
                   <Route path='/addStudent' element={<AddStudent/>}/>
                   <Route path='/addParent' element={<AddParent/>}/>
                   <Route path='/addStaff' element={<AddStaff/>}/>
+                  <Route path='/addClassroom' element={<AddClassroom/>}/>
+                  <Route path='/addGeneralExpense' element={<AddGeneralExpense/>}/>
+                  <Route path='/studentSchedule' element={<StudentSchedule/>}/>
+                  <Route path='/addStock' element={<AddStock/>}/>
                 </Routes>
           </Router>
           </Container>

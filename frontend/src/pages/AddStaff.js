@@ -7,6 +7,9 @@ import Paper from '@mui/material/Paper';
 import { DataGrid } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 
 const initialForm = {
     FirstName: '',
@@ -17,7 +20,8 @@ const initialForm = {
     Email: '',
     StaffType: '',
     ShiftType: '',
-    Salary: ''
+    Salary: '',
+    CourseInfo: ''
 };
 
 const sex = [
@@ -57,10 +61,25 @@ const ShiftType = [
     }
 ];
 
+const daysInitial = {
+    morning: false,
+    noon: false
+}
+
 export default function AddStaff() {
     const [addForms, setAddForms] = useState(initialForm);
     const [rowSelectionModel, setRowSelectionModel] = useState([]);
     const [selectValueError, setSelectValueError] = useState(false);
+    const [error, setError] = useState(false);
+    const [success, setSuccess] = useState(false);
+
+    const [monday, setMonday] = useState(daysInitial);
+    const [tuesday, setTuesday] = useState(daysInitial);
+    const [wednesday, setWednesday] = useState(daysInitial);
+    const [thursday, setThursday] = useState(daysInitial);
+    const [friday, setFriday] = useState(daysInitial);
+
+    const [rows, setRows] = useState([]);
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 70 },
@@ -91,22 +110,98 @@ export default function AddStaff() {
         { field: 'Salary', headerName: 'Maaş', width: 80 }
     ];
 
-    const rows = [
-        { id: 1, FirstName: 'Barış', LastName: 'Akan', Sex: 'M', PhoneNo: '05003002010', BirthDate: '06.50.1998', Email: 'b.akan@etu.edu.tr', StaffType: 1, ShiftType: 'FULLTIME', Salary: 50000 },
-        { id: 2, FirstName: 'Barış', LastName: 'Akan', Sex: 'M', PhoneNo: '05003002010', BirthDate: '06.50.1998', Email: 'b.akan@etu.edu.tr', StaffType: 1, ShiftType: 'FULLTIME', Salary: 50000 },
-        { id: 3, FirstName: 'Barış', LastName: 'Akan', Sex: 'M', PhoneNo: '05003002010', BirthDate: '06.50.1998', Email: 'b.akan@etu.edu.tr', StaffType: 1, ShiftType: 'FULLTIME', Salary: 50000 },
-        { id: 4, FirstName: 'Barış', LastName: 'Akan', Sex: 'M', PhoneNo: '05003002010', BirthDate: '06.50.1998', Email: 'b.akan@etu.edu.tr', StaffType: 1, ShiftType: 'FULLTIME', Salary: 50000 },
-        { id: 5, FirstName: 'Barış', LastName: 'Akan', Sex: 'M', PhoneNo: '05003002010', BirthDate: '06.50.1998', Email: 'b.akan@etu.edu.tr', StaffType: 1, ShiftType: 'FULLTIME', Salary: 50000 }
-    ];
-    
     const formsChange = (name, value) => { setAddForms({ ...addForms, [name]: value });}
+
+    const freeHoursChange = (day, time, value) => { 
+        if(day == 'monday') setMonday({...monday, [time]: value});
+        if(day == 'tuesday') setTuesday({...tuesday, [time]: value});
+        if(day == 'wednesday') setWednesday({...wednesday, [time]: value});
+        if(day == 'thursday') setThursday({...thursday, [time]: value});
+        if(day == 'friday') setFriday({...friday, [time]: value});
+    }
+
+    const createFreeHoursArray = () => {
+        let str = '';
+        let morning = "8-9-10-11";
+        let noon = "13-14-15-16";
+        let fullday = "8-9-10-11-13-14-15-16";
+
+        if(monday.morning && monday.noon) str += fullday;
+        else if(monday.morning) str += morning;
+        else if(monday.noon) str += noon;
+
+        str += ',';
+
+        if(tuesday.morning && tuesday.noon) str += fullday;
+        else if(tuesday.morning) str += morning;
+        else if(tuesday.noon) str += noon;
+
+        str += ',';
+
+        if(wednesday.morning && wednesday.noon) str += fullday;
+        else if(wednesday.morning) str += morning;
+        else if(wednesday.noon) str += noon;
+
+        str += ',';
+
+        if(thursday.morning && thursday.noon) str += fullday;
+        else if(thursday.morning) str += morning;
+        else if(thursday.noon) str += noon;
+
+        str += ',';
+
+        if(friday.morning && friday.noon) str += fullday;
+        else if(friday.morning) str += morning;
+        else if(friday.noon) str += noon;
+    
+        return str;
+    }
 
     const Alert = React.forwardRef(function Alert(props, ref) {
         return <MuiAlert elevation={6} ref={ref} {...props} />;
     });
 
+    useEffect(() => {
+
+		getAllStaff();
+
+	}, []);
+
+    const getAllStaff = () => {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "http://localhost:8080/staff");
+        xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+        xhr.onload = () => {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+              console.log(JSON.parse(xhr.responseText));
+              let rows = JSON.parse(xhr.responseText);
+              rows.map((row, i) => row.id = i + 1)
+              setRows(rows);
+              setSuccess(true);
+            } else {
+              console.log(`Error: ${xhr.status}`);
+              setError(true);
+            }
+          };
+        xhr.send();
+    };
+
     const save = () => {
-        console.log(addForms);
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:8080/staff");
+        xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+        xhr.onload = () => {
+            if (xhr.readyState == 4 && xhr.status == 201) {
+              console.log(JSON.parse(xhr.responseText));
+              setSuccess(true);
+              getAllStaff();
+            } else {
+              console.log(`Error: ${xhr.status}`);
+              setError(true);
+            }
+          };
+        const body = JSON.stringify({...addForms, WorkingHour: createFreeHoursArray()});
+        xhr.send(body);
     };
     const update = () => {
         if(rowSelectionModel.length == 0) setSelectValueError(true);
@@ -163,7 +258,7 @@ export default function AddStaff() {
                     id="dogumTarihi"
                     label="Doğum Tarihi"
                     variant="standard"
-                    helperText="GG.AA.YYYY"
+                    helperText="YYYY-AA-GG"
                     value={addForms.BirthDate}
                     onChange={ e => formsChange('BirthDate', e.target.value) }
                 />
@@ -221,6 +316,36 @@ export default function AddStaff() {
                     value={addForms.Salary}
                     onChange={ e => formsChange('Salary', e.target.value) }
                 />
+                <TextField
+                    required
+                    id="coursInfo"
+                    label="Ders Bilgisi"
+                    variant="standard"
+                    value={addForms.CourseInfo}
+                    onChange={ e => formsChange('CourseInfo', e.target.value) }
+                />
+                <FormGroup sx={{display: 'flex', flexDirection: 'row', marginTop: 2}}>
+                    <FormGroup sx={{display: 'flex', flexDirection: 'column'}}>
+                        <FormControlLabel control={<Checkbox  value={monday.morning} onChange={() => freeHoursChange('monday', 'morning', !monday.morning)}/>} label="Pazartesi Sabah"  />
+                        <FormControlLabel control={<Checkbox  value={monday.noon} onChange={() => freeHoursChange('monday', 'noon', !monday.noon)}/>} label="Pazartesi Öğlen"  />
+                    </FormGroup>
+                    <FormGroup sx={{display: 'flex', flexDirection: 'column'}}>
+                        <FormControlLabel control={<Checkbox  value={tuesday.morning} onChange={() => freeHoursChange('tuesday', 'morning', !tuesday.morning)}/>} label="Salı Sabah"  />
+                        <FormControlLabel control={<Checkbox  value={tuesday.noon} onChange={() => freeHoursChange('tuesday', 'noon', !tuesday.noon)}/>} label="Salı Öğlen"  />
+                    </FormGroup>
+                    <FormGroup sx={{display: 'flex', flexDirection: 'column'}}>
+                        <FormControlLabel control={<Checkbox  value={wednesday.morning} onChange={() => freeHoursChange('wednesday', 'morning', !wednesday.morning)}/>} label="Çarşamba Sabah"  />
+                        <FormControlLabel control={<Checkbox  value={wednesday.noon} onChange={() => freeHoursChange('wednesday', 'noon', !wednesday.noon)}/>} label="Çarşamba Öğlen"  />
+                    </FormGroup>
+                    <FormGroup sx={{display: 'flex', flexDirection: 'column'}}>
+                        <FormControlLabel control={<Checkbox  value={thursday.morning} onChange={() => freeHoursChange('thursday', 'morning', !thursday.morning)}/>} label="Perşembe Sabah"  />
+                        <FormControlLabel control={<Checkbox  value={thursday.noon} onChange={() => freeHoursChange('thursday', 'noon', !thursday.noon)}/>} label="Perşembe Öğlen"  />
+                    </FormGroup>
+                    <FormGroup sx={{display: 'flex', flexDirection: 'column'}}>
+                        <FormControlLabel control={<Checkbox  value={friday.morning} onChange={() => freeHoursChange('friday', 'morning', !friday.morning)}/>} label="Cuma Sabah"  />
+                        <FormControlLabel control={<Checkbox  value={friday.noon} onChange={() => freeHoursChange('friday', 'noon', !friday.noon)}/>} label="Cuma Öğlen"  />
+                    </FormGroup>
+                </FormGroup>
             </div>
             <Button variant="contained" onClick={save} sx={{ marginTop: 2 }}>Kaydet</Button>
         </Box>
@@ -237,11 +362,22 @@ export default function AddStaff() {
                 setRowSelectionModel(newRowSelectionModel);
             }}
             rowSelectionModel={rowSelectionModel}
+            sx={{height: 350}}
         />
     </Paper>
     <Snackbar open={selectValueError} autoHideDuration={2000} onClose={() => setSelectValueError(false)}>
         <Alert onClose={() => setSelectValueError(false)} severity="error" sx={{ width: '100%' }}>
             Tablodan bir satır seçiniz!
+        </Alert>
+    </Snackbar>
+    <Snackbar open={error} autoHideDuration={2000} onClose={() => setError(false)}>
+        <Alert onClose={() => setError(false)} severity="error" sx={{ width: '100%' }}>
+            Bir hata oluştu.
+        </Alert>
+    </Snackbar>
+    <Snackbar open={success} autoHideDuration={2000} onClose={() => setSuccess(false)}>
+        <Alert onClose={() => setSuccess(false)} severity="success" sx={{ width: '100%' }}>
+            İşlem başarılı.
         </Alert>
     </Snackbar>
     </>);

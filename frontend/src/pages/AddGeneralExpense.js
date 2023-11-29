@@ -7,65 +7,44 @@ import Paper from '@mui/material/Paper';
 import { DataGrid } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-
 const initialForm = {
-    FirstName: '',
-    LastName: '',
-    Sex: 'M',
-    PhoneNo: '',
-    Email: '',
-    Address: ''
+    ExpenseName: '',
+    Amount: '',
+    ExpenseDate: ''
 };
 
-const sex = [
-    {
-      value: 'M',
-      label: 'Erkek',
-    },
-    {
-      value: 'F',
-      label: 'Kadın',
-    }
-];
-
-export default function AddParent() {
+export default function AddGeneralExpense() {
     const [addForms, setAddForms] = useState(initialForm);
     const [rowSelectionModel, setRowSelectionModel] = useState([]);
     const [selectValueError, setSelectValueError] = useState(false);
-    const [rows, setRows] = useState([]);
     const [error, setError] = useState(false);
     const [success, setSuccess] = useState(false);
 
-    const columns = [
-        { field: 'id', headerName: 'Satır', width: 70 },
-        { field: 'ParentId', headerName: 'ID', width: 70 },
-        { field: 'FirstName', headerName: 'Ad', width: 130 },
-        { field: 'LastName', headerName: 'Soyad', width: 130 },
-        { field: 'Sex', headerName: 'Cinsiyet', width: 100, 
-            valueGetter: (params) => {
-                if(params.row.Sex == 'M') return 'Erkek'; 
-                else return 'Kadın';
-            }
-        },
-        { field: 'PhoneNo', headerName: 'Telefon Numarası', width: 150 },
-        { field: 'Email', headerName: 'E-Mail', width: 180 },
-    ];
+    const [rows, setRows] = useState([]);
 
-    const formsChange = (name, value) => { setAddForms({ ...addForms, [name]: value });}
+    const columns = [
+        { field: 'id', headerName: 'Satır', width: 70, type: 'number' },
+        { field: 'ExpenseId', headerName: 'Gider Kodu', width: 150, type: 'number' },
+        { field: 'ExpenseName', headerName: 'Gider Adı', width: 150 },
+        { field: 'Amount', headerName: 'Miktar', width: 150, type: 'number' },
+        { field: 'ExpenseDate', headerName: 'Tarih', width: 150 },
+    ];
 
     const Alert = React.forwardRef(function Alert(props, ref) {
         return <MuiAlert elevation={6} ref={ref} {...props} />;
     });
+    
+    const formsChange = (name, value) => { setAddForms({ ...addForms, [name]: value });}
 
     useEffect(() => {
 
-		getAllParents();
+		getAllExpense();
 
 	}, []);
 
-    const getAllParents = () => {
+    const getAllExpense = () => {
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", "http://localhost:8080/parents");
+        xhr.open("GET", "http://localhost:8080/generalExpenses");
         xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
         xhr.onload = () => {
             if (xhr.readyState == 4 && xhr.status == 200) {
@@ -81,25 +60,29 @@ export default function AddParent() {
           };
         xhr.send();
     };
-
+    
     const save = () => {
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://localhost:8080/parents");
+        xhr.open("POST", "http://localhost:8080/generalExpenses");
         xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
         xhr.onload = () => {
             if (xhr.readyState == 4 && xhr.status == 201) {
               console.log(JSON.parse(xhr.responseText));
-              getAllParents();
+              setSuccess(true);
+              getAllExpense();
             } else {
               console.log(`Error: ${xhr.status}`);
+              setError(true);
             }
           };
         const body = JSON.stringify(addForms);
         xhr.send(body);
     };
+    
     const update = () => {
         if(rowSelectionModel.length == 0) setSelectValueError(true);
     };
+
     const erase = () => {
         if(rowSelectionModel.length == 0) setSelectValueError(true);
     };
@@ -117,69 +100,33 @@ export default function AddParent() {
             <div>
                 <TextField
                     required
-                    id="ad"
-                    label="Ad"
+                    id="name"
+                    label="Gider Adı"
                     variant="standard"
-                    value={addForms.FirstName}
-                    onChange={ e => formsChange('FirstName', e.target.value) }
+                    value={addForms.ExpenseName}
+                    onChange={ e => formsChange('ExpenseName', e.target.value) }
                 />
                 <TextField
                     required
-                    id="soyad"
-                    label="Soyad"
+                    id="amount"
+                    label="Miktar"
                     variant="standard"
-                    value={addForms.LastName}
-                    onChange={ e => formsChange('LastName', e.target.value) }
+                    value={addForms.Amount}
+                    onChange={ e => formsChange('Amount', e.target.value) }
                 />
                 <TextField
                     required
-                    id="cinsiyet"
-                    select
-                    label="Cinsiyet"
-                    defaultValue="M"
+                    id="date"
+                    label="Tarih"
                     variant="standard"
-                    value={addForms.Sex}
-                    onChange={ e => formsChange('Sex', e.target.value) }
-                >
-                {sex.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                    </MenuItem>
-                ))}
-                </TextField>
-                <TextField
-                    required
-                    id="telNo"
-                    label="Telefon Numarası"
-                    variant="standard"
-                    value={addForms.PhoneNo}
-                    onChange={ e => formsChange('PhoneNo', e.target.value) }
-                />
-                <TextField
-                    required
-                    id="ePosta"
-                    label="E-Posta Adresi"
-                    variant="standard"
-                    value={addForms.Email}
-                    onChange={ e => formsChange('Email', e.target.value) }
-                />
-                <TextField
-                    required
-                    id="adres"
-                    label="Adres"
-                    variant="standard"
-                    value={addForms.Address}
-                    onChange={ e => formsChange('Address', e.target.value) }
+                    value={addForms.ExpenseDate}
+                    onChange={ e => formsChange('ExpenseDate', e.target.value) }
                 />
             </div>
             <Button variant="contained" onClick={save} sx={{ marginTop: 2 }}>Kaydet</Button>
         </Box>
     </Paper>
     <Paper sx={{ p: 2, marginTop: 2}}>
-        <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'right', gap: 2, marginBottom: 2}}>
-            <Button variant="contained" color="inherit" onClick={update}>Güncelle</Button>
-            <Button variant="contained" color="error" onClick={erase}>SİL</Button>
-        </Box>
         <DataGrid
             rows={rows}
             columns={columns}

@@ -11,12 +11,13 @@ async function createSchedule(req, res)
 {
     try 
     {   
-        const enrollInfo =  Object.values([await enrollService.getEnrolledCourses()]);
-        console.log(enrollInfo[0]['CourseId']);
+        const enrollInfo =  Object.values(await enrollService.getEnrolledCourses());
+        console.log('enrollInfo')
+        console.log(enrollInfo)
         for (let i = 0; i < enrollInfo.length; i++)
         {
             const courseId = enrollInfo[i]['CourseId'];
-            console.log(courseId + '***********')
+            
             const teacherId = await teachesClassService.getTeacherIdByCourseId(courseId);
             console.log(teacherId + '***');
             if (teacherId === null)
@@ -27,9 +28,15 @@ async function createSchedule(req, res)
             for (let j = 0; j < teacherHours.length; j++)
             {
                 const availableStudents = Object.values(await enrollService.getAvailableEnrollments(courseId, teacherHours[j]['FreeDay'], teacherHours[j]['FreeHour']));
+                console.log('availableStudents')
+                console.log(availableStudents)
                 const availableClassroom = Object.values([await classroomService.findFreeClassroom(teacherHours[j]['FreeDay'], teacherHours[j]['FreeHour'])]);
+                console.log('availableClassroom')
+                console.log(availableClassroom)
                 const capacity = await classroomService.getClassroomCapacityById(availableClassroom);
-                console.log(capacity + ' ---------- \n' + availableClassroom + ' ----------- \n' + (availableStudents[0]['StudentId']));
+                console.log('capacity')
+                console.log(capacity)
+                //console.log(capacity + ' ---------- \n' + availableClassroom + ' ----------- \n' + (availableStudents[0]['StudentId']));
                 await classService.createClass({ SectionId: j + 1, CourseId: courseId, RoomId: availableClassroom, TeacherId: teacherId });
                 await classHourService.createClassHours({ ReservedDay: teacherHours[j]['FreeDay'], ReservedHour: teacherHours[j]['FreeHour'], SectionId: j + 1, CourseId: courseId });
                 for (let k = 0; k < Math.min(capacity, availableStudents.length); k++)

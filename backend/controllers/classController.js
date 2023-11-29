@@ -9,7 +9,8 @@ async function getFreeHoursForTeacher(req, res)
         console.log(TeacherId);
         const workingHours = await staffHourService.getWorkingHoursById(TeacherId);
         const classHour = await classHoursService.getClassHoursByTeacherId(TeacherId);
-        res.status(200).json(workingHours);
+        const freeHour = findHourDifference(classHour, workingHours)
+        res.status(200).json(freeHour);
     }
     catch (error)
     {
@@ -21,20 +22,22 @@ async function getFreeHoursForTeacher(req, res)
 function findHourDifference(classHours, workingHours)
 {
     let dummy = [];
-    for (let i = 0 ; i< workingHours.length ; i++){
-        for (let n = 0; n<classHours.length ; n++){
-            if(workingHours[i]===classHours[n]){
+    for (let i = 0 ; i< workingHours.length ; i++)
+    {
+            if(workingHours[i].ReservedDay===classHours.ReservedDay && workingHours[i].StaffHour===classHours.StaffHour)
+            {
                 break;
             }
-            else{
-                dummy[i]=workingHours[i]; 
+            else
+            {
+                dummy.push(workingHours[i]); 
             }
-        }
     }
     return dummy;
 
 }
 
 module.exports = {
-    getFreeHoursForTeacher
+    getFreeHoursForTeacher,
+    findHourDifference
 }

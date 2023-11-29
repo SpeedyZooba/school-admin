@@ -94,40 +94,9 @@ async function updateClassHours(oldData, newData)
     }
 }
 
-async function getClassHoursByTeacherId(staffId)
-{
-    try 
-    {
-        const query = `
-        SELECT
-            CLASS_HOURS.ReservedDay AS ReservedDay,
-            CLASS_HOURS.ReservedHour AS StaffHour
-        FROM
-            CLASS
-        INNER JOIN
-            CLASS_HOURS ON CLASS_HOURS.SectionId = CLASS.SectionId AND CLASS_HOURS.CourseId = CLASS.CourseId
-        WHERE
-            CLASS.TeacherId = :staffId;
-        `;
-    
-        const [results] = await sequelize.query(query, {
-            replacements: { staffId },
-            type: sequelize.QueryTypes.SELECT,
-        });
-    
-        return results;
-    } 
-    catch (error) 
-    {
-        console.error('Error:', error);
-        throw new Error('Error fetching class hours for teacher.');
-    }
-}
-
 module.exports = { 
     createClassHours,
     findAllClassHours,
     deleteClassHours,
     updateClassHours,
-    getClassHoursByTeacherId
 }

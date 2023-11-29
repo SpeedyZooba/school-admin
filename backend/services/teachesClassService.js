@@ -28,10 +28,11 @@ async function getTeacherIdByCourseId(courseId)
 {
     try 
     {
-        const courseLink = TeachesClass.findAll({ where: { CourseId: courseId } });
-        if (courseLink ?? true)
+        const courseLink = await TeachesClass.findOne({ where: { CourseId: courseId } });
+        console.log(courseLink);
+        if (courseLink !== null)
         {
-            return courseLink;
+            return courseLink.StaffId;
         }
         else
         {

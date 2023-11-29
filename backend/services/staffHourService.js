@@ -61,6 +61,54 @@ async function getWorkingHoursById(staffId)
     }
 }
 
+async function getFreeHoursByTeacherId(teacherId)
+{
+    try 
+    {
+        const query = `
+        WITH TEACHER_SCHEDULE AS (
+            SELECT
+            CLASS.TeacherId AS TeacherId,
+                CLASS_HOURS.ReservedDay AS BusyDay,
+                CLASS_HOURS.ReservedHour AS BusyHour
+            FROM
+                CLASS
+            INNER JOIN
+                CLASS_HOURS ON CLASS_HOURS.SectionId = CLASS.SectionId AND CLASS_HOURS.CourseId = CLASS.CourseId
+        )
+        SELECT
+            STAFF_WORKING_HOURS.ReservedDay AS FreeDay,
+            STAFF_WORKING_HOURS.StaffHour AS FreeHour
+        FROM
+            STAFF
+        INNER JOIN
+            STAFF_WORKING_HOURS ON STAFF.StaffId = STAFF_WORKING_HOURS.StaffId
+        WHERE NOT EXISTS (
+            SELECT 
+                1
+            FROM 
+                TEACHER_SCHEDULE
+            WHERE 
+                STAFF_WORKING_HOURS.ReservedDay = TEACHER_SCHEDULE.BusyDay AND STAFF_WORKING_HOURS.StaffHour = TEACHER_SCHEDULE.BusyHour
+                AND STAFF.StaffId = TEACHER_SCHEDULE.TeacherId
+            )
+            AND STAFF.StaffId = :staffId;
+        `;
+    
+        const [results] = await sequelize.query(query, {
+            replacements: { staffId: teacherId },
+            type: sequelize.QueryTypes.SELECT,
+        });
+    
+        return results;
+    } 
+    catch (error) 
+    {
+        console.error('Error:', error);
+        throw new Error('Error fetching class hours for teacher.');
+    }
+}
+
 function mapDay(index)
 {
     const daysOfWeek = ['Pzt', 'Sal', 'Car', 'Prs', 'Cum'];
@@ -71,5 +119,6 @@ module.exports = {
     createWorkingHour,
     deleteWorkingHourForStaff,
     getWorkingHoursById,
+    getFreeHoursByTeacherId,
     mapDay
 };

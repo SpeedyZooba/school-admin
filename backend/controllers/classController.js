@@ -53,7 +53,7 @@ async function getClassSchedule(req, res)
 {
     try
     {
-        const classroomId = req.body.RoomId;
+        const classroomId = req.query.RoomId;
         const classList = await classService.getClassroomTimes(classroomId);
         res.status(200).json(classList);
     }
@@ -84,7 +84,7 @@ async function getTeacherSchedule(req, res)
     try
     {
         const teacherId = req.query.TeacherId;
-        const teacherList = await classService.getStudentTimes(teacherId);
+        const teacherList = await classService.getTeacherTimes(teacherId);
         res.status(200).json(teacherList);
     }
     catch (error)

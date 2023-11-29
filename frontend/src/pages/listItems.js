@@ -47,5 +47,29 @@ export const secondaryListItems = (
       </ListItemIcon>
       <ListItemText primary="Personel İşlemleri" />
     </ListItemButton>
+    <ListItemButton onClick={() => {goPage('addClassroom')}}>
+      <ListItemIcon>
+        <AssignmentIcon />
+      </ListItemIcon>
+      <ListItemText primary="Sınıf İşlemleri" />
+    </ListItemButton>
+    <ListItemButton onClick={() => {goPage('addGeneralExpense')}}>
+      <ListItemIcon>
+        <AssignmentIcon />
+      </ListItemIcon>
+      <ListItemText primary="Genel Gider İşlemleri" />
+    </ListItemButton>
+    <ListItemButton onClick={() => {goPage('addStock')}}>
+      <ListItemIcon>
+        <AssignmentIcon />
+      </ListItemIcon>
+      <ListItemText primary="Stok İşlemleri" />
+    </ListItemButton>
+    <ListItemButton onClick={() => {goPage('studentSchedule')}}>
+      <ListItemIcon>
+        <AssignmentIcon />
+      </ListItemIcon>
+      <ListItemText primary="Öğrenci Ders Programı" />
+    </ListItemButton>
   </React.Fragment>
 );

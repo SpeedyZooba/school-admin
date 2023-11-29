@@ -50,12 +50,6 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "SectionId" },
-        ]
-      },
-      {
-        name: "CourseId",
-        using: "BTREE",
-        fields: [
           { name: "CourseId" },
         ]
       },

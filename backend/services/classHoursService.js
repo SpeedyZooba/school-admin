@@ -3,6 +3,7 @@ const initModels = require('../models/init-models.js');
 
 const models = initModels(sequelize);
 const ClassHours = models.class_hours;
+const Class = models.class_;
 
 
 async function createClassHours(data)
@@ -93,9 +94,40 @@ async function updateClassHours(oldData, newData)
     }
 }
 
+async function getClassHoursByTeacherId(staffId)
+{
+    try 
+    {
+        const query = `
+        SELECT
+            CLASS_HOURS.ReservedDay AS BusyDay,
+            CLASS_HOURS.ReservedHour AS BusyHour
+        FROM
+            CLASS
+        INNER JOIN
+            CLASS_HOURS ON CLASS_HOURS.SectionId = CLASS.SectionId AND CLASS_HOURS.CourseId = CLASS.CourseId
+        WHERE
+            CLASS.TeacherId = :staffId;
+        `;
+    
+        const [results] = await sequelize.query(query, {
+            replacements: { staffId },
+            type: sequelize.QueryTypes.SELECT,
+        });
+    
+        return results;
+    } 
+    catch (error) 
+    {
+        console.error('Error:', error);
+        throw new Error('Error fetching class hours for teacher.');
+    }
+}
+
 module.exports = { 
     createClassHours,
     findAllClassHours,
     deleteClassHours,
-    updateClassHours
+    updateClassHours,
+    getClassHoursByTeacherId
 }

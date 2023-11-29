@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('parent_of', {
+  return sequelize.define('enroll', {
     StudentId: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -10,19 +10,18 @@ module.exports = function(sequelize, DataTypes) {
         key: 'StudentId'
       }
     },
-    ParentId: {
+    CourseId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
       references: {
-        model: 'parent',
-        key: 'ParentId'
+        model: 'course',
+        key: 'CourseId'
       }
     }
   }, {
     sequelize,
-    tableName: 'parent_of',
-    hasTrigger: true,
+    tableName: 'enroll',
     timestamps: false,
     indexes: [
       {
@@ -31,14 +30,14 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "StudentId" },
-          { name: "ParentId" },
+          { name: "CourseId" },
         ]
       },
       {
-        name: "ParentId",
+        name: "CourseId",
         using: "BTREE",
         fields: [
-          { name: "ParentId" },
+          { name: "CourseId" },
         ]
       },
     ]

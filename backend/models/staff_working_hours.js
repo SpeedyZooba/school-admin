@@ -32,7 +32,7 @@ module.exports = function(sequelize, DataTypes) {
         fields: [
           { name: "StaffId" },
           { name: "ReservedDay" },
-          { name: "StaffHour" }
+          { name: "StaffHour" },
         ]
       },
     ]

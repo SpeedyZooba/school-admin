@@ -4,6 +4,7 @@ var _class_expense = require("./class_expense");
 var _class_hours = require("./class_hours");
 var _classroom = require("./classroom");
 var _course = require("./course");
+var _enroll = require("./enroll");
 var _general_expense = require("./general_expense");
 var _parent = require("./parent");
 var _parent_of = require("./parent_of");
@@ -21,6 +22,7 @@ function initModels(sequelize) {
   var class_hours = _class_hours(sequelize, DataTypes);
   var classroom = _classroom(sequelize, DataTypes);
   var course = _course(sequelize, DataTypes);
+  var enroll = _enroll(sequelize, DataTypes);
   var general_expense = _general_expense(sequelize, DataTypes);
   var parent = _parent(sequelize, DataTypes);
   var parent_of = _parent_of(sequelize, DataTypes);
@@ -32,13 +34,13 @@ function initModels(sequelize) {
   var student_free_hours = _student_free_hours(sequelize, DataTypes);
   var teaches_class = _teaches_class(sequelize, DataTypes);
 
-  class_.belongsToMany(class_, { as: 'CourseId_classes', through: class_expense, foreignKey: "SectionId", otherKey: "CourseId" });
-  class_.belongsToMany(class_, { as: 'SectionId_classes', through: class_expense, foreignKey: "CourseId", otherKey: "SectionId" });
-  class_.belongsToMany(class_, { as: 'CourseId_class_class_hours', through: class_hours, foreignKey: "SectionId", otherKey: "CourseId" });
-  class_.belongsToMany(class_, { as: 'SectionId_class_class_hours', through: class_hours, foreignKey: "CourseId", otherKey: "SectionId" });
+  class_.belongsToMany(class_, { as: 'CourseId_classes', through: class_hours, foreignKey: "SectionId", otherKey: "CourseId" });
+  class_.belongsToMany(class_, { as: 'SectionId_classes', through: class_hours, foreignKey: "CourseId", otherKey: "SectionId" });
   course.belongsToMany(staff, { as: 'StaffId_staffs', through: teaches_class, foreignKey: "CourseId", otherKey: "StaffId" });
-  parent.belongsToMany(student, { as: 'StudentId_students', through: parent_of, foreignKey: "ParentId", otherKey: "StudentId" });
-  staff.belongsToMany(course, { as: 'CourseId_courses', through: teaches_class, foreignKey: "StaffId", otherKey: "CourseId" });
+  course.belongsToMany(student, { as: 'StudentId_students', through: enroll, foreignKey: "CourseId", otherKey: "StudentId" });
+  parent.belongsToMany(student, { as: 'StudentId_student_parent_ofs', through: parent_of, foreignKey: "ParentId", otherKey: "StudentId" });
+  staff.belongsToMany(course, { as: 'CourseId_course_teaches_classes', through: teaches_class, foreignKey: "StaffId", otherKey: "CourseId" });
+  student.belongsToMany(course, { as: 'CourseId_courses', through: enroll, foreignKey: "StudentId", otherKey: "CourseId" });
   student.belongsToMany(parent, { as: 'ParentId_parents', through: parent_of, foreignKey: "StudentId", otherKey: "ParentId" });
   class_expense.belongsTo(class_, { as: "Section", foreignKey: "SectionId"});
   class_.hasMany(class_expense, { as: "class_expenses", foreignKey: "SectionId"});
@@ -56,6 +58,8 @@ function initModels(sequelize) {
   classroom.hasMany(class_, { as: "classes", foreignKey: "RoomId"});
   class_.belongsTo(course, { as: "Course", foreignKey: "CourseId"});
   course.hasMany(class_, { as: "classes", foreignKey: "CourseId"});
+  enroll.belongsTo(course, { as: "Course", foreignKey: "CourseId"});
+  course.hasMany(enroll, { as: "enrolls", foreignKey: "CourseId"});
   teaches_class.belongsTo(course, { as: "Course", foreignKey: "CourseId"});
   course.hasMany(teaches_class, { as: "teaches_classes", foreignKey: "CourseId"});
   parent_of.belongsTo(parent, { as: "Parent", foreignKey: "ParentId"});
@@ -66,6 +70,10 @@ function initModels(sequelize) {
   staff.hasMany(staff_working_hours, { as: "staff_working_hours", foreignKey: "StaffId"});
   teaches_class.belongsTo(staff, { as: "Staff", foreignKey: "StaffId"});
   staff.hasMany(teaches_class, { as: "teaches_classes", foreignKey: "StaffId"});
+  class_expense.belongsTo(stocks, { as: "Product", foreignKey: "ProductId"});
+  stocks.hasMany(class_expense, { as: "class_expenses", foreignKey: "ProductId"});
+  enroll.belongsTo(student, { as: "Student", foreignKey: "StudentId"});
+  student.hasMany(enroll, { as: "enrolls", foreignKey: "StudentId"});
   parent_of.belongsTo(student, { as: "Student", foreignKey: "StudentId"});
   student.hasMany(parent_of, { as: "parent_ofs", foreignKey: "StudentId"});
   student_classes.belongsTo(student, { as: "Student", foreignKey: "StudentId"});
@@ -79,6 +87,7 @@ function initModels(sequelize) {
     class_hours,
     classroom,
     course,
+    enroll,
     general_expense,
     parent,
     parent_of,

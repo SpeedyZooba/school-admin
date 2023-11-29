@@ -13,6 +13,7 @@ const classExpenseRoutes = require('../backend/routes/classExpenseRoute.js');
 const courseRoutes = require('../backend/routes/courseRoute.js');
 const generalExpenseRoutes = require('../backend/routes/generalExpenseRoute.js');
 const stockRoutes = require('../backend/routes/stockRoute.js');
+const classhourRoute = require('../backend/routes/classhourRoute.js');
 
 var corsOptions = {
   origin: "http://localhost:3000"
@@ -31,6 +32,7 @@ app.use('/', classExpenseRoutes);
 app.use('/', courseRoutes);
 app.use('/', generalExpenseRoutes);
 app.use('/', stockRoutes);
+app.use('/', classhourRoute)
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));

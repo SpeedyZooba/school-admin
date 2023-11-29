@@ -22,7 +22,11 @@ module.exports = function(sequelize, DataTypes) {
     ProductId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      references: {
+        model: 'stocks',
+        key: 'ProductId'
+      }
     },
     Amount: {
       type: DataTypes.INTEGER,
@@ -36,6 +40,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     sequelize,
     tableName: 'class_expense',
+    hasTrigger: true,
     timestamps: false,
     indexes: [
       {
@@ -55,6 +60,13 @@ module.exports = function(sequelize, DataTypes) {
         fields: [
           { name: "CourseId" },
           { name: "SectionId" },
+        ]
+      },
+      {
+        name: "ProductId",
+        using: "BTREE",
+        fields: [
+          { name: "ProductId" },
         ]
       },
     ]

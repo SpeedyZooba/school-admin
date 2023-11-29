@@ -115,7 +115,7 @@ export default function ClassroomSchedule() {
         setSchedule([]);
         if(rowSelectionModel.length == 0) setSelectValueError(true);
         else{
-            const roomId = rows.find(row => row.id === rowSelectionModel[0])?.RoomId;
+            const roomId = rows.find(row => row.id === rowSelectionModel[0]).RoomId;
             console.log(rows.filter(row => row.id == rowSelectionModel[0])[0].RoomId);
             const xhr = new XMLHttpRequest();
             xhr.open("GET", `http://localhost:8080/schedule/class?RoomId=${roomId}`);

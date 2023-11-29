@@ -21,6 +21,7 @@ import AddStock from './pages/AddStock';
 import StudentSchedule from './pages/StudentSchedule';
 import TeacherSchedule from './pages/TeacherSchedule';
 import ClassroomSchedule from './pages/ClassroomSchedule';
+import AddClassExpense from './pages/AddClassExpense';
 import { mainListItems, secondaryListItems } from './pages/listItems';
 import {
   BrowserRouter as Router,
@@ -39,6 +40,7 @@ const PageName = () => {
   else if(window.location.pathname == '/addStock') return 'Stok Ekle';
   else if(window.location.pathname == '/teacherSchedule') return 'Öğretmen Ders Programı';
   else if(window.location.pathname == '/classroomSchedule') return 'Sınıf Ders Programı';
+  else if(window.location.pathname == '/addClassExpense') return 'Ders Giderleri';
 }
 
 const drawerWidth = 300;
@@ -175,6 +177,7 @@ export default function Dashboard() {
                   <Route path='/addStock' element={<AddStock/>}/>
                   <Route path='/teacherSchedule' element={<TeacherSchedule/>}/>
                   <Route path='/classroomSchedule' element={<ClassroomSchedule/>}/>
+                  <Route path='/addClassExpense' element={<AddClassExpense/>}/>
                 </Routes>
           </Router>
           </Container>

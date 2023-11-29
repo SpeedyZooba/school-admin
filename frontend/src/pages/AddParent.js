@@ -96,12 +96,6 @@ export default function AddParent() {
         const body = JSON.stringify(addForms);
         xhr.send(body);
     };
-    const update = () => {
-        if(rowSelectionModel.length == 0) setSelectValueError(true);
-    };
-    const erase = () => {
-        if(rowSelectionModel.length == 0) setSelectValueError(true);
-    };
 
   return (<>
     <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
@@ -175,9 +169,6 @@ export default function AddParent() {
         </Box>
     </Paper>
     <Paper sx={{ p: 2, marginTop: 2}}>
-        <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'right', gap: 2, marginBottom: 2}}>
-            <Button variant="contained" color="error" onClick={erase}>SİL</Button>
-        </Box>
         <DataGrid
             rows={rows}
             columns={columns}

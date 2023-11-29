@@ -109,12 +109,12 @@ async function findFreeClassroom(freeDay, freeHour)
         LIMIT 1;
         `;
     
-        const [results] = await sequelize.query(query, {
+        const results = await sequelize.query(query, {
             replacements: { freeDay, freeHour },
             type: sequelize.QueryTypes.SELECT,
         });
         console.log(results);
-        return results.ClassroomId;
+        return results[0]['ClassroomId'];
     } 
     catch (error) 
     {

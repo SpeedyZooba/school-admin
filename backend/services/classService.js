@@ -105,12 +105,12 @@ async function getTeacherTimes(teacherId)
             CLASS.TeacherId = :teacherId;
         `;
 
-        const [results] = await sequelize.query(query, {
+        const results = await sequelize.query(query, {
             replacements: { teacherId },
             type: sequelize.QueryTypes.SELECT,
         });
-    
-        return results;
+        console.log(results[0])
+        return results[0];
     }
     catch (error) 
     {

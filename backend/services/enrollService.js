@@ -65,7 +65,7 @@ async function getEnrolledCourses()
             TotalEnrollment DESC;
         `;
     
-        const [results] = await sequelize.query(query, {
+        const results = await sequelize.query(query, {
             type: sequelize.QueryTypes.SELECT,
         });
     

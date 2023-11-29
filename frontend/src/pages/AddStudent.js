@@ -181,10 +181,6 @@ export default function AddStudent() {
         const body = JSON.stringify({...addForms, FreeHour: createFreeHoursArray()});
         xhr.send(body);
     };
-    
-    const update = () => {
-        if(rowSelectionModel.length == 0) setSelectValueError(true);
-    };
 
     const erase = () => {
         if(rowSelectionModel.length == 0) setSelectValueError(true);
@@ -317,7 +313,7 @@ export default function AddStudent() {
     </Paper>
     <Paper sx={{ p: 2, marginTop: 2 }}>
         <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'right', gap: 2, marginBottom: 2}}>
-            <Button variant="contained" color="error" onClick={erase}>SİL</Button>
+            {/* <Button variant="contained" color="error" onClick={erase}>SİL</Button> */}
         </Box>
         <DataGrid
             rows={rows}

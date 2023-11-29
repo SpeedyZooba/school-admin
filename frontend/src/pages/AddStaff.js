@@ -204,11 +204,27 @@ export default function AddStaff() {
         const body = JSON.stringify({...addForms, WorkingHour: createFreeHoursArray()});
         xhr.send(body);
     };
-    const update = () => {
-        if(rowSelectionModel.length == 0) setSelectValueError(true);
-    };
+
     const erase = () => {
         if(rowSelectionModel.length == 0) setSelectValueError(true);
+        else{
+            console.log(rows.find(row => row.id === rowSelectionModel[0]).StaffId);
+            const xhr = new XMLHttpRequest();
+            xhr.open("DELETE", "http://localhost:8080/staff");
+            xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+            xhr.onload = () => {
+                if (xhr.readyState == 4 && xhr.status == 201) {
+                console.log(JSON.parse(xhr.responseText));
+                setSuccess(true);
+                getAllStaff();
+                } else {
+                console.log(`Error: ${xhr.status}`);
+                setError(true);
+                }
+            };
+            const body = JSON.stringify({StaffId: rows.find(row => row.id === rowSelectionModel[0]).StaffId});
+            xhr.send(body);
+        }
     };
 
   return (<>

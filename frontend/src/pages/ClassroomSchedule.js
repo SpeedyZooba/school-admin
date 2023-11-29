@@ -46,29 +46,31 @@ export default function ClassroomSchedule() {
     });
 
     const createScheduleData = (input) => {
-        let id = 0;
-        let arr = [];
-        let template = {id: '', rowHour: '', Pzt:'', Sal: '', Car: '', Prs: '', Cum: ''};
+      let inputArray = [];
+      inputArray.push(JSON.parse(input));
+      let id = 0;
+      let arr = [];
+      let template = {id: '', rowHour: '', Pzt:'', Sal: '', Car: '', Prs: '', Cum: ''};
 
-        for(let hour = 8; hour < 17; hour++){
-            let tempTemplate = template;
-            for(let day = 0; day < 5; day++){
-                let hourStr = hour + ':00 - ' + hour + ':50'
-                for(let i = 0; i < input.length; i++){
-                    let temp = input[i];
-                    if(temp.ClassHour == hour && temp.ClassDay == days[day]){
-                        tempTemplate = {...tempTemplate, rowHour: hourStr, [days[day]]: temp.CourseName + '.' + temp.SectionId};
-                    }else{
-                        tempTemplate = ({...tempTemplate, rowHour: hourStr})
-                    }
-                }
-            }
-            tempTemplate = {...tempTemplate, id: id};
-            arr.push(tempTemplate);
-            id++;
-        }
-        return arr;
-    }
+      for(let hour = 8; hour < 17; hour++){
+          let tempTemplate = template;
+          for(let day = 0; day < 5; day++){
+              let hourStr = hour + ':00 - ' + hour + ':50'
+              for(let i = 0; i < inputArray.length; i++){
+                  let temp = inputArray[i];
+                  if(temp.ClassHour == hour && temp.ClassDay == days[day]){
+                      tempTemplate = {...tempTemplate, rowHour: hourStr, [days[day]]: temp.CourseName + '.' + temp.SectionId};
+                  }else{
+                      tempTemplate = ({...tempTemplate, rowHour: hourStr})
+                  }
+              }
+          }
+          tempTemplate = {...tempTemplate, id: id};
+          arr.push(tempTemplate);
+          id++;
+      }
+      return arr;
+  }
 
     const createSchedule = () => {
       const xhr = new XMLHttpRequest();
@@ -110,9 +112,10 @@ export default function ClassroomSchedule() {
     };
     
     const getSchedule = () => {
+        setSchedule([]);
         if(rowSelectionModel.length == 0) setSelectValueError(true);
         else{
-            const roomId = rows.find(row => row.id === rowSelectionModel[0])?.RoomId;
+            const roomId = rows.find(row => row.id === rowSelectionModel[0]).RoomId;
             console.log(rows.filter(row => row.id == rowSelectionModel[0])[0].RoomId);
             const xhr = new XMLHttpRequest();
             xhr.open("GET", `http://localhost:8080/schedule/class?RoomId=${roomId}`);

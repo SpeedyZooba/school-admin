@@ -62,6 +62,8 @@ export default function StudentSchedule() {
     });
 
     const createScheduleData = (input) => {
+        let inputArray = [];
+        inputArray.push(JSON.parse(input));
         let id = 0;
         let arr = [];
         let template = {id: '', rowHour: '', Pzt:'', Sal: '', Car: '', Prs: '', Cum: ''};
@@ -70,10 +72,10 @@ export default function StudentSchedule() {
             let tempTemplate = template;
             for(let day = 0; day < 5; day++){
                 let hourStr = hour + ':00 - ' + hour + ':50'
-                for(let i = 0; i < input.length; i++){
-                    let temp = input[i].split('-');
-                    if(temp[0] == hour && temp[1] == days[day]){
-                        tempTemplate = {...tempTemplate, rowHour: hourStr, [days[day]]: temp[2] + '.' + temp[3]};
+                for(let i = 0; i < inputArray.length; i++){
+                    let temp = inputArray[i];
+                    if(temp.ClassHour == hour && temp.ClassDay == days[day]){
+                        tempTemplate = {...tempTemplate, rowHour: hourStr, [days[day]]: temp.CourseName + '.' + temp.SectionId};
                     }else{
                         tempTemplate = ({...tempTemplate, rowHour: hourStr})
                     }
@@ -85,7 +87,6 @@ export default function StudentSchedule() {
         }
         return arr;
     }
-
     const createSchedule = () => {
         const xhr = new XMLHttpRequest();
         xhr.open("POST", "http://localhost:8080/schedule");
@@ -126,6 +127,7 @@ export default function StudentSchedule() {
     };
     
     const getSchedule = () => {
+        setSchedule([]);
         if(rowSelectionModel.length == 0) setSelectValueError(true);
         else{
             const studentId = rows.filter(row => row.id == rowSelectionModel[0])[0].StudentId;

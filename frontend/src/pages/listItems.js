@@ -66,6 +66,12 @@ export const secondaryListItems = (
       </ListItemIcon>
       <ListItemText primary="Stok İşlemleri" />
     </ListItemButton>
+    <ListItemButton onClick={() => {goPage('addClassExpense')}}>
+      <ListItemIcon>
+        <AssignmentIcon />
+      </ListItemIcon>
+      <ListItemText primary="Ders Giderleri" />
+    </ListItemButton>
     <ListSubheader component="div" inset>
       Ders Programları
     </ListSubheader>

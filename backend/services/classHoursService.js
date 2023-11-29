@@ -100,8 +100,8 @@ async function getClassHoursByTeacherId(staffId)
     {
         const query = `
         SELECT
-            CLASS_HOURS.ReservedDay AS BusyDay,
-            CLASS_HOURS.ReservedHour AS BusyHour
+            CLASS_HOURS.ReservedDay AS ReservedDay,
+            CLASS_HOURS.ReservedHour AS StaffHour
         FROM
             CLASS
         INNER JOIN

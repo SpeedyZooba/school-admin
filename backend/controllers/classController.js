@@ -20,7 +20,19 @@ async function getFreeHoursForTeacher(req, res)
 
 function findHourDifference(classHours, workingHours)
 {
-    
+    let dummy = [];
+    for (let i = 0 ; i< workingHours.length ; i++){
+        for (let n = 0; n<classHours.length ; n++){
+            if(workingHours[i]===classHours[n]){
+                break;
+            }
+            else{
+                dummy[i]=workingHours[i]; 
+            }
+        }
+    }
+    return dummy;
+
 }
 
 module.exports = {

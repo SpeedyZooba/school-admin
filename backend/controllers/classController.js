@@ -26,13 +26,16 @@ async function createSchedule(req, res)
             const teacherHours = Object.values([await staffHourService.getFreeHoursByTeacherId(teacherId)]);
             for (let j = 0; j < teacherHours.length; j++)
             {
-                const availableStudents = Object.values([await enrollService.getAvailableEnrollments(courseId, teacherHours[j]['FreeDay'], teacherHours[j]['FreeHour'])]);
+                const availableStudents = Object.values(await enrollService.getAvailableEnrollments(courseId, teacherHours[j]['FreeDay'], teacherHours[j]['FreeHour']));
                 const availableClassroom = Object.values([await classroomService.findFreeClassroom(teacherHours[j]['FreeDay'], teacherHours[j]['FreeHour'])]);
+                const capacity = await classroomService.getClassroomCapacityById(availableClassroom);
+                console.log(capacity + ' ---------- \n' + availableClassroom + ' ----------- \n' + (availableStudents[0]['StudentId']));
                 await classService.createClass({ SectionId: j + 1, CourseId: courseId, RoomId: availableClassroom, TeacherId: teacherId });
                 await classHourService.createClassHours({ ReservedDay: teacherHours[j]['FreeDay'], ReservedHour: teacherHours[j]['FreeHour'], SectionId: j + 1, CourseId: courseId });
-                for (let k = 0; k < availableStudents.length; k++)
+                for (let k = 0; k < Math.min(capacity, availableStudents.length); k++)
                 {
                     await studentClassService.createStudentClassLink({ StudentId: availableStudents[k]['StudentId'], SectionId: j + 1, CourseId: courseId });
+                    await enrollService.completeEnroll(availableStudents[k]['StudentId'], courseId);
                 }
                 await classroomHourService.updateClassroomHour(availableClassroom, teacherHours[j]['FreeDay'], teacherHours[j]['FreeHour'], courseId, j + 1);
             }
@@ -50,7 +53,7 @@ async function getClassSchedule(req, res)
 {
     try
     {
-        const classroomId = req.body.RoomId;
+        const classroomId = req.query.RoomId;
         const classList = await classService.getClassroomTimes(classroomId);
         res.status(200).json(classList);
     }
@@ -65,7 +68,7 @@ async function getStudentSchedule(req, res)
 {
     try
     {
-        const studentId = req.body.StudentId;
+        const studentId = req.query.StudentId;
         const studentList = await classService.getStudentTimes(studentId);
         res.status(200).json(studentList);
     }
@@ -80,7 +83,7 @@ async function getTeacherSchedule(req, res)
 {
     try
     {
-        const teacherId = req.body.TeacherId;
+        const teacherId = req.query.TeacherId;
         const teacherList = await classService.getStudentTimes(teacherId);
         res.status(200).json(teacherList);
     }

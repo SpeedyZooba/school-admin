@@ -18,6 +18,20 @@ async function createClassroom(data)
     }
 }
 
+async function getClassroomCapacityById(classroomId)
+{
+    try
+    {
+        const classroom = await Classroom.findOne({ where: { RoomId: classroomId } });
+        return classroom.Capacity;
+    }
+    catch (error)
+    {
+        console.error("Something went wrong with classroom fetch.", error);
+        throw new Error("Something went wrong.");
+    }
+}
+
 async function findAllClassroom()
 {
     try 
@@ -99,7 +113,7 @@ async function findFreeClassroom(freeDay, freeHour)
             replacements: { freeDay, freeHour },
             type: sequelize.QueryTypes.SELECT,
         });
-    
+        console.log(results);
         return results.ClassroomId;
     } 
     catch (error) 
@@ -114,5 +128,6 @@ module.exports = {
     findAllClassroom,
     deleteClassroom,
     updateClassroom,
-    findFreeClassroom
+    findFreeClassroom,
+    getClassroomCapacityById
 }

@@ -2,7 +2,7 @@ const sequelize = require('../seqConfig.js');
 const initModels = require('../models/init-models.js');
 
 const models = initModels(sequelize);
-const Enroll = models.Enroll;
+const Enroll = models.enroll;
 
 async function getAvailableEnrollments(courseId, freeDay, freeHour)
 {
@@ -18,15 +18,32 @@ async function getAvailableEnrollments(courseId, freeDay, freeHour)
         LEFT JOIN
 	        STUDENT_FREE_HOURS ON STUDENT_FREE_HOURS.StudentId = ENROLL.StudentId 
         WHERE
-            ENROLL.CourseId = :courseId AND STUDENT_FREE_HOURS.ReservedDay = :freeDay AND STUDENT_FREE_HOURS.StudentHour = :freeHour`;
+            ENROLL.CourseId = :CourseId AND STUDENT_FREE_HOURS.ReservedDay = :FreeDay AND STUDENT_FREE_HOURS.StudentHour = :FreeHour;`;
     
-        const [results] = await sequelize.query(query, {
-            replacements: { courseId, freeDay, freeHour },
+        const results = await sequelize.query(query, {
+            replacements: { CourseId: courseId, FreeDay: freeDay, FreeHour: freeHour},
             type: sequelize.QueryTypes.SELECT,
+        });
+        results.forEach(result => {
+            console.log(result);
         });
         return results;
     } 
     catch (error) 
+    {
+        console.error('Error:', error);
+        throw new Error('Error fetching class hours for teacher.');
+    }
+}
+
+async function completeEnroll(studentId, courseId)
+{
+    try
+    {
+        const enrolled = await Enroll.destroy({ where: { StudentId: studentId, CourseId: courseId } });
+        return enrolled;
+    }
+    catch (error)
     {
         console.error('Error:', error);
         throw new Error('Error fetching class hours for teacher.');
@@ -63,5 +80,6 @@ async function getEnrolledCourses()
 
 module.exports = {
     getAvailableEnrollments,
-    getEnrolledCourses
+    getEnrolledCourses,
+    completeEnroll
 }
